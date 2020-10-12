@@ -433,13 +433,13 @@ class: left, top
 
 .pull-left[
 
-- vectors
+- **Vectors**
 
  - atomic (logical, integer, double, and character)
  
  - S3 (factors, dates, date-times, durations)
 
-- matrices
+- **Matrices**
 
  - two dimensional objects
  
@@ -447,15 +447,15 @@ class: left, top
  
  .pull-right[
 
-- arrays
+- **Arrays**
 
  - multidimensional objects
 
-- data frames & tibbles  
+- **Data frames & tibbles**  
 
  - rectangular objects
 
-- lists 
+- **Lists** 
 
  - recursive objects
  
