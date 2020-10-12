@@ -1,0 +1,34 @@
+---
+title: "R Workflow Best Practices"
+subtitle: "BioMarin R-Meetup: managing code, data, and files"  
+author: 
+  - "Martin Frigaard"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", dpi = 320, fig.height = 4)
+library(tidyverse)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+xaringanthemer::style_mono_light(base_color = "cornflowerblue")
+# xaringan::inf_mr() # for instant knitting and reviewing
+```
+
+class: center, middle
+
+# R Workflow Best Practices
+
+### Managing your code, data, and files in the R ecosystem
+
