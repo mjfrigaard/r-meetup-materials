@@ -15,11 +15,15 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(xaringanthemer)
+library(xaringan)
+library(pagedown)
+library(tidyverse)
 options(htmltools.dir.version = FALSE)
 ```
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
-library(xaringanthemer)
+# 
 xaringanthemer::style_mono_light(base_color = "cornflowerblue")
 # xaringan::inf_mr() # for instant knitting and reviewing
 ```
@@ -1139,7 +1143,49 @@ If we check the structure of the `dat_list`, we see the structure of list, and t
 str(dat_list)
 ```
 
+---
+class: left, top
+
+# Recap
+
+**In R, two major elements: functions and objects.** 
+
+ - *functions are verbs, objects are nouns*
+ 
 --
+
+**Packages: use `install.packages()` and `library()` to load functions from packages**  
+
+ - *or `devtools::install_github(<username>/<package>)` or `remotes::install_github(<username>/<package>)`*
+
+--
+
+**The most common R object is a vector**
+
+ - Atomic vectors: *logical, integer, double, or character (strings)*  
+ - S3 vectors: *factors, dates, date-times, and difftimes*  
+ 
+---
+class: left, top
+
+# Recap, cont.
+
+**More complicated data structures: matrices and arrays**  
+
+  - Matrix: *two-dimensional object*   
+  - Array: *multidimensional object*  
+
+--
+
+**Rectangular data structures:**
+
+  - *`data.frame`s & `tibble`s are special kinds of rectangular lists, which can hold different types of vectors, with each vector being of equal length* 
+--
+
+
+**Catch-all data structures:**
+
+  - *lists can contain all other objects (including other lists)*
 
 ---
 class: left, top
@@ -1167,4 +1213,8 @@ class: center, top
 
 mjfrigaard@gmail.com 
 
+
+```{r chrome_print, echo=FALSE, results='hide'}
+pagedown::chrome_print("01-intro-to-r-programming.html")
+```
 
