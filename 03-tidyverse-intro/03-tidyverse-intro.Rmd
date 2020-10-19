@@ -1,0 +1,54 @@
+---
+title: "Introduction to the Tidyverse "
+subtitle: "BioMarin R-Meetup: A tidy way to import, wrangle, visualize, and model your data"  
+author: 
+  - "Martin Frigaard"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(reprex)
+library(xaringan)
+library(pagedown)
+fs::dir_create("img")
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", 
+                      dpi = 320, fig.height = 4, fig.path = "img/")
+
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+xaringanthemer::style_mono_light(base_color = "cornflowerblue")
+# xaringan::inf_mr() # for instant knitting and reviewing
+```
+
+class: center, middle
+
+# Welcome to the `tidyverse`!
+
+---
+class: left, top
+
+# What is the `tidyverse`?
+
+> ### *"The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures."*
+> ### - ***[tidyverse.org](https://www.tidyverse.org/)***
+
+--
+
+#### Core packages in the `tidyverse`
+
+
+
+
+
