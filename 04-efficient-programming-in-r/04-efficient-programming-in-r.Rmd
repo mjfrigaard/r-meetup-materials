@@ -1,5 +1,5 @@
 ---
-title: "Efficient R Programming in R"
+title: "Efficient Programming in R"
 subtitle: "BioMarin R-Meetup: tips for improving your code"  
 author: 
   - "Martin Frigaard"
@@ -39,14 +39,44 @@ class: center, middle
 ---
 class: left, top
 
-# What is the 'efficient' programming in R?
+# Objectives
 
-> ### *"The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures."*
-> ### - ***[tidyverse.org](https://www.tidyverse.org/)***
+### 1. Define efficiency/efficient programming in R  
+
+### 2. Practices for improving programming efficiency  
+
+### 3. Packages to improve your efficiency  
+
+
+---
+class: left, top
+
+# What is the 'efficient' programming in R?
 
 --
 
-#### Core packages in the `tidyverse`
+### *Efficient programming, defined:*
+
+--
+
+> ### ***"...the amount of useful work a person (not a computer) can do per unit time"***
+
+--
+
+### - *Efficient R programming, defined:*
+
+--
+
+> #### - ***...efficient R programming can be interpreted as finding a solution that is fast enough in terms of computational efficiency but as fast as possible in terms of programmer efficiency.***
+
+Source: [Efficient R Programming, 2020](https://csgillespie.github.io/efficientR/introduction.html)
+
+---
+class: left, top
+
+
+
+
 
 
 
