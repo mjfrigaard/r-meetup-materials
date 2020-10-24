@@ -1,11 +1,13 @@
 ---
 title: "Introduction to Data Visualization with ggplot2"
 subtitle: "BioMarin Meetup: introduction to the grammar of graphics"
-date: "`r Sys.Date()`"
+author: 
+  - "Martin Frigaard"
+date: '`r Sys.Date()`'
 output:
   xaringan::moon_reader:
-    css: ["default", "theme.css"]
     lib_dir: libs
+    css: xaringan-themer.css
     nature:
       highlightStyle: github
       highlightLines: true
@@ -13,39 +15,49 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE, tibble.max_extra_cols = 6, tibble.width = 60)
-knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", dpi = 320, fig.height = 4)
 library(tidyverse)
-library(datasauRus)
-diabetes <- read_csv("diabetes.csv")
+library(reprex)
+library(xaringan)
+library(pagedown)
+fs::dir_create("img")
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", 
+                      dpi = 320, fig.height = 4, fig.path = "img/")
+
 ```
 
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+xaringanthemer::style_mono_light(base_color = "cornflowerblue")
+# xaringan::inf_mr() # for instant knitting and reviewing
+```
 
-```{r, out.height="90%", out.width="90%", echo = FALSE}
+```{r ggplot2_masterpiece, out.height="90%", out.width="90%", echo = FALSE}
 knitr::include_graphics("img/ggplot2_masterpiece.png")
 ```
+
 .pull-right[Art by Allison Horst]
 
 ---
-
 class: inverse, center
 
 # Data Visualization with R
-## **ggplot2** works well with the **tidyverse** and is friendly and powerful
+
+## The `ggplot2` package provides a comprehensive grammar for creating graphs/figures
+
+## It works hand-and-hand with the `tidyverse` 
 
 ---
-
 class: inverse, center
 
 # Data Visualization with R
-## ~~ggplot2 works well with the tidyverse and is friendly and powerful~~
-## **Better plots** are **better communication**
+
+## Better plots are better communication
 
 ---
-
 class: inverse, center
-
 background-image: url(img/tidyhex.png)
+
 
 ---
 background-image: url(http://hexb.in/hexagons/ggplot2.png)
@@ -62,6 +74,7 @@ background-position: 90% 10%
 # ggplot2: Elegant Data Visualizations in R
 
 ## ~~a Layered Grammar of Graphics~~
+
 ## Data is mapped to aesthetics; Statistics and plot are linked
 
 ---
@@ -75,7 +88,6 @@ background-position: 90% 10%
 ## Sensible defaults; Infinitely extensible
 
 ---
-
 background-image: url(http://hexb.in/hexagons/ggplot2.png)
 background-position: 90% 10%
 
@@ -93,7 +105,6 @@ as_tibble(mtcars)
 ```
 
 ---
-
 class: middle
 
 ```{r slide-11, out.height="100%", out.width="100%", echo = FALSE}
@@ -127,7 +138,9 @@ ggplot(mtcars, aes(x = mpg, y = hp)) +
 ---
 
 # `ggplot()`
+
 ### `ggplot(data = <data>, mapping = aes(<mapping>)) + `
+
 ###  &nbsp;&nbsp; `<geom_function>()`
 
 ---
@@ -223,8 +236,7 @@ ggplot(
 ```{r slide-25}
 ggplot(
   data = diabetes, 
-  mapping = aes(x = weight, y = hip, color = gender)
-) +
+  mapping = aes(x = weight, y = hip, color = gender)) +
   geom_point()
 ```
 
@@ -243,8 +255,7 @@ ggplot(
 ```{r slide-27}
 ggplot(
   data = diabetes, 
-  mapping = aes(x = weight, y = hip, alpha = gender)
-) +
+  mapping = aes(x = weight, y = hip, alpha = gender)) +
   geom_point()
 ```
 
@@ -702,7 +713,6 @@ datasaurus_dozen
 ```
 
 ---
-
 class: middle
 
 ```{r, out.height="100%", out.width="100%", echo = FALSE}
@@ -713,13 +723,20 @@ knitr::include_graphics("img/new_data_alert_datasaurus.png")
 
 ## Your Turn 9: Challenge!
 
-#### 1. Load the `datasauRus` package. This package includes a data set called `datasaurus_dozen`.
+#### 1. Load the `datasauRus` package. This package includes a data set called `datasaurus_dozen`
+
 #### 2. Use dplyr to summarize the correlation between `x` and `y`. First, group it by `dataset`, and then summarize with the `cor()`  function. Call the new variable `corr`. What's it look like?
+
 #### 3. Mutate `corr`. Round it to 2 digits. Then, mutate it again (or wrap it around your first change) using: `paste("corr:", corr)`
-#### 4. Save the summary data frame as `corrs`.
+
+#### 4. Save the summary data frame as `corrs`
+
 #### 5. Pass `datasaurus_dozen` to `ggplot()` and add a point geom
-#### 6. Use a facet (wrap) for `dataset`.
-#### 7. Add a text geom. For this geom, set `data = corrs`. You also need to use `aes()` in this call to set `label = corr`, `x = 50`, and `y = 110`.
+
+#### 6. Use a facet (wrap) for `dataset`
+
+#### 7. Add a text geom. For this geom, set `data = corrs`. You also need to use `aes()` in this call to set `label = corr`, `x = 50`, and `y = 110`
+
 
 ---
 
