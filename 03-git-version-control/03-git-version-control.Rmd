@@ -1,0 +1,149 @@
+---
+title: "Version Control with Git & Github"
+subtitle: "BioMarin Data Management: managing changes, versioning, and collaboration"  
+author: 
+  - "Martin Frigaard, Cinical Programmer"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", dpi = 320, fig.height = 4)
+library(tidyverse)
+library(reprex)
+library(xaringan)
+library(pagedown)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+xaringanthemer::style_mono_light(base_color = "cornflowerblue")
+# xaringan::inf_mr() # for instant knitting and reviewing
+```
+
+class: center, middle
+
+# Git and version control
+
+### Keeping track of your changes, versions, and collaborators with RStudio
+
+---
+background-image: url(img/GitHub-Mark-Light-120px-plus.png)
+background-position: 50% 90%
+background-size: 20%
+class: inverse, center, top
+
+# Git
+
+### *Version control systems are typically used to track and manage changes to source code files*
+
+### *Git was built to help design software, with lots of collaborators working on multiple files at the same time*
+
+
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# Git***...the bad news first!***
+
+--
+
+### Git is frustrating to learn
+
+--
+
+#### The command line is cryptic and leaves little room for error
+
+--
+
+### Version control is something *we do*, not just something *we use*
+
+--
+
+#### Git control forces us to formalize processes and takes planning
+
+--
+
+### Git is complicated because change is complicated
+
+--
+
+> *"Git isn't difficult because you're not smart enough, or because you missed an important meeting. Git is difficult because Git is difficult."* - David Demaree, Git For Humans
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# Downloading Git
+
+### You can download Git from this website:
+
+https://git-scm.com/
+
+```{r git-scm, echo=FALSE, out.height='70%', out.width='70%'}
+knitr::include_graphics(path = "img/git-scm.png")
+```
+
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# Installing Git (mac)
+
+### Installing Git on macOS is 
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# Installing Git (Windows)
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# Command line basics
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# Command line (in RStudio)
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# Initiate A Git Repository
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# 

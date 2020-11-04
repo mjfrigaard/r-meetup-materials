@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Reproducible Data Analysis With R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Martin Frigaard" />
+    <meta name="date" content="2020-11-04" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Reproducible Data Analysis With R
+## BioMarin CSM: Writing dynamic reports with RMarkdown
+### Martin Frigaard
+### 2020-11-04
+
+---
+
+
+
+
+
+
+
+
+
+&lt;img src="img/rmarkdown_wizards.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+.pull-right[Artwork by @allison_horst]
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 10%
+
+# Getting set up 
+
+## Make sure you've created a Github account
+
+If you haven't, Head over to Github and create a free account. 
+
+.pull-left[
+
+&lt;img src="img/create-github-account.png" width="150%" height="150%" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+.pull-right[
+
+#### *Follow this link:* 
+
+https://github.com/join
+
+]
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 10%
+
+# Getting RStudio Set Up 
+
+&lt;br&gt;&lt;br&gt;
+
+### Head over to RStudio.Cloud and sign in with your Github account
+
+.pull-left[
+
+&lt;img src="img/welcome-rstudio-cloud.png" width="170%" height="170%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="img/login-with-github.png" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 10%
+
+# RStudio.Cloud Workspace
+
+### *This is where your new projects will show up!*
+
+&lt;img src="img/new-rstudio-cloud-env.png" width="170%" height="170%" style="display: block; margin: auto;" /&gt;
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 10%
+
+# Click on the link below:
+
+https://rstudio.cloud/project/1859537
+
+### Click *Save a Permanent Copy* and create a personal copy in your workspace
+
+&lt;img src="img/save-rstudio-cloud-copy.png" width="80%" height="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 10%
+
+# What you should see
+
+&lt;br&gt;
+
+### Now you have a local copy of this RStudio project in your RStudio.Cloud workspace. 
+
+&lt;img src="img/open-rstudio-cloud-project.png" width="95%" height="95%" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, center
+background-image: url(img/rmarkdown.png)
+background-position: 50% 22%
+background-size: 12%
+
+# *What is RMarkdown?*
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+--
+
+### 1) Data analysis/writing workflow: *code and text in same document*
+
+--
+
+### 2) End-to-end reproducibility: *re-run your analysis and produce the same result*
+
+--
+
+### 3) Flexible outputs: *create a variety of outputs (.pdf, .docx, .pptx, .html)*
+
+---
+class: center, top
+
+# `rmarkdown` works directly with `knitr`
+
+&lt;br&gt;
+
+
+.pull-left[
+
+`rmarkdown` combines R code and markdown into a variety of formats
+
+
+&lt;img src="img/rmarkdown.png" width="40%" height="40%" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+.pull-right[
+
+`knitr` supports literate programming and generates dynamic documents 
+
+&lt;img src="img/knitr.png" width="40%" height="40%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 95% 8%
+background-size: 12%
+class: inverse, middle, center
+
+# A quick example...
+
+### We will create an example HTML report using the R Markdown template provided by RStudio
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 95% 12%
+background-size: 9%
+class: left, top
+
+# Your turn: create a new RMarkdown file
+
+
+.pull-left[
+
+### *File* &gt;&gt;&gt; 
+
+### *New File* &gt;&gt;&gt; 
+
+### *R Markdown... &gt;&gt;&gt; * 
+
+]
+
+
+.pull-right[
+
+### *Or use the drop-down menu*
+
+&lt;img src="img/new-rmarkdown.png" width="35%" height="35%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 93%
+background-size: 8%
+class: left, top
+
+# Install required packages 
+
+&lt;br&gt;
+
+.pull-left[
+
+RStudio will ask to install the required packages for R Markdown, Click *Yes*
+
+&lt;img src="img/install-req-packages.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+.pull-right[
+
+You will see RStudio install the packages in the **Jobs** pane
+
+&lt;img src="img/rmd-pckgs-jobs.png" width="180%" height="180%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 93%
+background-size: 8%
+class: middle
+
+# Your new `.Rmd` file
+
+### Enter ***Title*** and ***Author*** of your report and click ***OK***
+
+&lt;img src="img/rmarkdown-defaults.png" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 93%
+background-size: 8%
+class: left, top
+
+# Save your `.Rmd` file
+
+### Click on the small floppy disk to save your `.Rmd` file
+
+### Enter a name (`01-monthly-report.Rmd`) 
+
+&lt;img src="img/save-rmd-file.png" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 93%
+background-size: 8%
+class: left, top
+
+# Knit your .Rmd file
+
+### Click on the small gear, select *Preview in Viewer Pane*
+
+### Click on the knit icon (ball of yarn)
+
+&lt;img src="img/knit-rmd-file.png" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 7%
+background-size: 8%
+class: left, center
+
+## R Markdown in action!
+
+&lt;img src="img/rmarkdown-in-action.png" width="110%" height="110%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 95% 8%
+background-size: 8%
+class: inverse, middle, center
+
+# How R Markdown Works
+
+---
+background-image: url(img/how-rmd-works.png)
+background-position: 50% 50%
+background-size: 96%
+class: left, middle
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 8% 95%
+background-size: 8%
+class: center, middle
+
+# Rmarkdown combines metadata, R Code *and* markdown
+
+&lt;img src="img/r-plus-md.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+### .yaml = Metadata 
+### .md = Prose   
+### .R = Code    
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# R Markdown
+
+## `.yaml` = Metadata
+### ~~`.md` = Prose~~  
+### ~~`.R` = Code~~
+
+&lt;br&gt;&lt;br&gt;
+
+### YAML stands for *YAML Ain't Markup Language* (funny, huh?)
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# R Markdown: YAML
+
+&lt;br&gt;&lt;br&gt;
+
+### YAML contains the information about what kind of output we're going to create
+
+```yaml
+---
+title: "Monthly Report"
+author: "Martin Frigaard"
+date: "10/27/2020"
+output: html_document
+---
+```
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# YAML output options: table of contents 
+
+### `toc:` can be set to `true` or `false`
+
+### `toc_float:` can be set to `true` or `false`
+
+### `toc_depth:` set numerically `0` - `6`
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# R Markdown: YAML settings
+
+&lt;br&gt;&lt;br&gt;
+
+### Change `output` in the YAML header to the following: 
+
+```yaml
+output: 
+  html_document: 
+    toc: yes
+    toc_float: true
+```
+
+### Knit the document again
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# YAML output options: table of contents 
+
+### Floating table of contents (rendered)
+
+&lt;img src="img/yaml-toc-settings.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 97% 10%
+background-size: 8%
+
+# YAML output options: text highlighting and table options
+
+### Add the following two options to your YAML header
+
+```yaml
+
+output: 
+  html_document: 
+    toc: yes
+    toc_float: yes
+    highlight: zenburn
+    theme: united
+---
+
+```
+
+### Knit the document again
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# YAML output options: table of contents 
+
+### Floating table of contents (rendered)
+
+&lt;img src="img/yaml-highlight-theme.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# YAML Parameters
+
+### YAML parameters can be referred to throughout the document
+
+```yaml
+---
+params: 
+  param1: x
+  param2: y
+  data: df
+---
+```
+
+--
+
+
+```r
+params$param1
+params$param2
+params$data
+```
+
+---
+
+### Your turn 8
+
+###  Change the `params` option in the YAML header to use a different continent. Re-knit
+
+
+```r
+gapminder %&gt;% 
+  filter(continent == params$continent) %&gt;% 
+  ggplot(aes(x = year, y = lifeExp, group = country, color = country)) +
+  geom_line(lwd = 1, show.legend = FALSE) + 
+  scale_color_manual(values = country_colors) +
+  theme_minimal(14) + 
+  theme(strip.text = element_text(size = rel(1.1))) +
+  ggtitle(paste("Continent:", params$continent))
+```
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 10%
+
+# YAML output formats
+
+Function       | Outputs
+-------------- | --------------------------
+`html_document()`   | HTML
+`pdf_document()`  | PDF
+`word_document()` | Word .docx
+`odt_document()`   | .odt
+`rtf_document()`   | .rtf
+`md_document()`   | Markdown
+`slidy_presentation()`   | Slidy Slides (HTML)
+`beamer_presentation()`   | Beamer Slides (PDF)
+`ioslides_presentation()`   | ioslides (HTML)
+`powerpoint_presentation()`   | Powerpoint Slides
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 15%
+
+
+# R Markdown
+
+## **Prose** = *Markdown*
+## ~~Code~~
+## ~~Metadata~~
+
+
+
+
+
+
+
+
+
+
+  
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 15%
+
+
+# R Markdown
+
+## **Prose** = *Markdown*
+## ~~Code~~
+## ~~Metadata~~
+
+---
+background-image: url(img/markdown.png)
+background-position: 93% 10%
+background-size: 15%
+class: left, top
+
+# Basic Markdown Syntax
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.pull-left[
+
+```md
+ *italic*   **bold**
+
+ _italic_   __bold__
+```
+
+]
+
+--
+
+.pull-right[
+
+ *italic*   **bold**
+
+ _italic_   __bold__
+
+]
+
+---
+background-image: url(img/markdown.png)
+background-position: 93% 10%
+background-size: 15%
+class: left, top
+
+# Basic Markdown Syntax
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.pull-left[
+
+```md
+# Header 1
+
+## Header 2
+
+### Header 3
+```
+
+]
+
+--
+
+.pull-right[
+
+# Header 1
+## Header 2
+### Header 3
+
+]
+
+---
+background-image: url(img/markdown.png)
+background-position: 93% 10%
+background-size: 15%
+class: left, top
+
+# Basic Markdown Syntax
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.pull-left[
+
+```md
+ * Item 1
+ * Item 2
+    + Item 2a
+    + Item 2b
+    
+ 1. Item 1
+ 2. Item 2
+```
+
+]
+
+--
+
+.pull-right[
+
+* Item 1  
+* Item 2
+    + Item 2a
+    + Item 2b
+
+
+ 1. Item 1
+ 2. Item 2
+
+]
+
+
+---
+background-image: url(img/markdown.png)
+background-position: 93% 10%
+background-size: 15%
+class: left, top
+
+# Basic Markdown Syntax
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+```md
+https://www.biomarin.com/
+
+[linked phrase](https://www.biomarin.com/)
+```
+
+### *becomes...*
+
+--
+
+[linked phrase](https://www.biomarin.com/)
+
+
+---
+background-image: url(img/markdown.png)
+background-position: 93% 10%
+background-size: 15%
+class: left, top
+
+
+# Basic Markdown Syntax
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+```md
+![](https://www.r-project.org/logo/Rlogo.png)
+
+![optional caption](https://www.r-project.org/logo/Rlogo.png)
+```
+
+### *becomes...*
+
+--
+
+&lt;img src="https://www.r-project.org/logo/Rlogo.png" width="30%" height="30%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+background-image: url(img/markdown.png)
+background-position: 93% 10%
+background-size: 15%
+class: left, top
+
+# Basic Markdown Syntax
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.pull-left[
+
+```md
+$equation$
+
+$$ equation $$
+```
+
+]
+
+--
+
+.pull-right[
+
+`\(equation\)`
+
+$$ equation $$
+
+]
+
+
+---
+background-image: url(img/markdown.png)
+background-position: 93% 10%
+background-size: 15%
+class: left, top
+
+# Basic Markdown Syntax
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.pull-left[
+
+```md
+~~strikethrough~~
+```
+]
+
+--
+
+.pull-right[
+
+~~strikethrough~~
+
+]
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 12%
+
+# R Markdown
+
+## ~~Prose~~
+## **Code** = *R code chunks*
+## ~~Metadata~~
+
+---
+
+# Code chunks
+
+&lt;img src="img/code_chunk.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Code chunks
+
+&lt;img src="img/code_chunk_fences.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Code chunks
+
+&lt;img src="img/code_chunk_opts.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Chunk options
+
+Option       | Effect
+-------------- | --------------------------
+`include = FALSE`   | run the code but don't print it or results
+`eval = FALSE`   | don't evaluate the code
+`echo = FALSE`  | run the code and output but don't print code
+`message = FALSE` | don't print messages (e.g. from a function)
+`warning = FALSE`   | don't print warnings
+`fig.cap = "Figure 1`   | caption output plot with "Figure 1"
+
+--
+
+## See the [knitr web page](https://yihui.name/knitr/options/)
+
+---
+
+## Engines
+
+## 52! Including **Python**, **Julia**, **C++**, **SQL**, **SAS**, and **Stata**
+
+---
+
+## Insert code chunks with **`cmd/ctrl + alt/option + I`**
+
+
+&lt;img src="img/rmarkdown_knit.png" width="30%" height="30%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Edit code chunk options
+
+&lt;img src="img/chunk_setup_gui.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Your turn 4 (open **`exercises.Rmd`**)
+
+### Create a code chunk. You can type it in manually, use the keyboard short-cut (Cmd/Ctrl + Option/Alt + I), or use the "Insert" button above. Put the following code in it:
+
+```r
+gapminder %&gt;% 
+  slice(1:5) %&gt;% 
+  knitr::kable()
+```
+### Knit the document
+
+---
+
+## Your turn 5
+  
+### Add `echo = FALSE` to the code chunk above and re-knit
+
+### Remove `echo = FALSE` from the code chunk and move it to `knitr::opts_chunk$set()` in the `setup` code chunk. Re-knit. What's different about this?
+
+
+--
+
+### **Make sure to remove `knitr::opts_chunk$set(echo = FALSE)`**
+
+---
+
+### Inline Code
+
+&lt;img src="img/inline_code.png" width="75%" height="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Inline Code
+
+&lt;img src="img/inline_code_highlight.png" width="75%" height="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Your turn 6
+
+### Remove `eval = FALSE` so that R Markdown evaluates the code
+
+### Use `summarize()` and `n_distinct()` to get the the number of unique years in gapminder and save the results as `n_years`
+
+### Use inline code to describe the data set in the text below the code chunk and re-knit.
+
+---
+
+# Make cool stuff in R Markdown!
+
+## bookdown
+## blogdown
+## these slides!
+
+---
+class: left, top
+
+# Resources
+
+### [R Markdown](https://bookdown.org/yihui/rmarkdown/): A comprehensive but friendly introduction to R Markdown and friends. Free online.
+
+### Check out the `citr` package for easy citation insertion and .bib management
+
+### [R for Data Science](http://r4ds.had.co.nz/): A comprehensive but friendly introduction to the tidyverse. Free online.
+
+### [R Markdown for Scientists](https://rmd4sci.njtierney.com/): R Markdown for Scientists workshop material
+
+### Do the ten-twenty minute tutorial on markdown at https://commonmark.org/help/tutorial. 
+
+### check out the [`ymlthis` package](https://r-lib.github.io/ymlthis/) for tools and documentation for working with YAML
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
