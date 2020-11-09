@@ -4,7 +4,7 @@
     <title>Reproducible Data Analysis With R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Martin Frigaard" />
-    <meta name="date" content="2020-11-04" />
+    <meta name="date" content="2020-11-08" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -15,10 +15,9 @@ class: center, middle, inverse, title-slide
 # Reproducible Data Analysis With R
 ## BioMarin CSM: Writing dynamic reports with RMarkdown
 ### Martin Frigaard
-### 2020-11-04
+### 2020-11-08
 
 ---
-
 
 
 
@@ -34,7 +33,7 @@ class: center, middle, inverse, title-slide
 ---
 background-image: url(img/rmarkdown.png)
 background-position: 93% 10%
-background-size: 10%
+background-size: 8%
 
 # Getting set up 
 
@@ -44,7 +43,9 @@ If you haven't, Head over to Github and create a free account.
 
 .pull-left[
 
-&lt;img src="img/create-github-account.png" width="150%" height="150%" style="display: block; margin: auto;" /&gt;
+#### *Follow this link:* 
+
+https://github.com/join
 
 ]
 
@@ -52,18 +53,16 @@ If you haven't, Head over to Github and create a free account.
 
 .pull-right[
 
-#### *Follow this link:* 
-
-https://github.com/join
+&lt;img src="img/create-github-account.png" width="150%" height="150%" style="display: block; margin: auto;" /&gt;
 
 ]
 
 ---
 background-image: url(img/rmarkdown.png)
 background-position: 93% 10%
-background-size: 10%
+background-size: 8%
 
-# Getting RStudio Set Up 
+# Getting RStudio.Cloud Set Up 
 
 &lt;br&gt;&lt;br&gt;
 
@@ -75,6 +74,8 @@ background-size: 10%
 
 ]
 
+--
+
 .pull-right[
 
 &lt;img src="img/login-with-github.png" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
@@ -84,9 +85,9 @@ background-size: 10%
 ---
 background-image: url(img/rmarkdown.png)
 background-position: 93% 10%
-background-size: 10%
+background-size: 8%
 
-# RStudio.Cloud Workspace
+# Your RStudio.Cloud Workspace
 
 ### *This is where your new projects will show up!*
 
@@ -96,7 +97,7 @@ background-size: 10%
 ---
 background-image: url(img/rmarkdown.png)
 background-position: 93% 10%
-background-size: 10%
+background-size: 8%
 
 # Click on the link below:
 
@@ -110,7 +111,7 @@ https://rstudio.cloud/project/1859537
 ---
 background-image: url(img/rmarkdown.png)
 background-position: 93% 10%
-background-size: 10%
+background-size: 8%
 
 # What you should see
 
@@ -121,38 +122,61 @@ background-size: 10%
 &lt;img src="img/open-rstudio-cloud-project.png" width="95%" height="95%" style="display: block; margin: auto;" /&gt;
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Installing the packages
+
+### Run the `intall.R` file 
+
+Copy the code below and run it in the *Console* pane and click enter/return
+
+
+```r
+source("install.R")
+```
+
+
+&lt;img src="img/source-install-script.png" width="85%" height="85%" style="display: block; margin: auto;" /&gt;
+
+
+---
 class: inverse, center
 background-image: url(img/rmarkdown.png)
-background-position: 50% 22%
-background-size: 12%
+background-position: 93% 10%
+background-size: 8%
 
 # *What is RMarkdown?*
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
+--
+
+## Three technologies:
 
 --
 
-### 1) Data analysis/writing workflow: *code and text in same document*
+### 1) Markdown is a plain text markup language for capturing *human-readable* prose
 
 --
 
-### 2) End-to-end reproducibility: *re-run your analysis and produce the same result*
+### 2) Data manipulation/graphing/statistical language engines for computing *machine-readable* code
 
 --
 
-### 3) Flexible outputs: *create a variety of outputs (.pdf, .docx, .pptx, .html)*
+### 3) Multiple *output options* for creating PDFs, Word docs, PowerPoints, HTML, etc.
 
 ---
 class: center, top
 
-# `rmarkdown` works directly with `knitr`
+# How R Markdown works 
+
+## `rmarkdown` works directly with `knitr`
 
 &lt;br&gt;
 
-
 .pull-left[
 
-`rmarkdown` combines R code and markdown into a variety of formats
+`rmarkdown` combines YAML, markdown, and R code into a markdown document and passes it to `knitr`
 
 
 &lt;img src="img/rmarkdown.png" width="40%" height="40%" style="display: block; margin: auto;" /&gt;
@@ -163,7 +187,7 @@ class: center, top
 
 .pull-right[
 
-`knitr` supports literate programming and generates dynamic documents 
+`knitr` uses `pandoc` (a universal document conversion tool) to generate the specified document format
 
 &lt;img src="img/knitr.png" width="40%" height="40%" style="display: block; margin: auto;" /&gt;
 
@@ -172,10 +196,10 @@ class: center, top
 ---
 background-image: url(img/rmarkdown.png)
 background-position: 95% 8%
-background-size: 12%
+background-size: 8%
 class: inverse, middle, center
 
-# A quick example...
+# Exercises
 
 ### We will create an example HTML report using the R Markdown template provided by RStudio
 
@@ -185,8 +209,7 @@ background-position: 95% 12%
 background-size: 9%
 class: left, top
 
-# Your turn: create a new RMarkdown file
-
+# Exercise 1: create a new RMarkdown file
 
 .pull-left[
 
@@ -201,9 +224,9 @@ class: left, top
 
 .pull-right[
 
-### *Or use the drop-down menu*
+***Or use the drop-down menu***
 
-&lt;img src="img/new-rmarkdown.png" width="35%" height="35%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/new-rmarkdown.png" width="40%" height="40%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -219,7 +242,7 @@ class: left, top
 
 .pull-left[
 
-RStudio will ask to install the required packages for R Markdown, Click *Yes*
+RStudio.Cloud *might* ask to install the required packages for R Markdown, Click **Yes**
 
 &lt;img src="img/install-req-packages.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
 
@@ -229,7 +252,7 @@ RStudio will ask to install the required packages for R Markdown, Click *Yes*
 
 .pull-right[
 
-You will see RStudio install the packages in the **Jobs** pane
+You will see RStudio installing the packages in the **Jobs** pane
 
 &lt;img src="img/rmd-pckgs-jobs.png" width="180%" height="180%" style="display: block; margin: auto;" /&gt;
 
@@ -242,7 +265,7 @@ background-position: 7% 93%
 background-size: 8%
 class: middle
 
-# Your new `.Rmd` file
+# New R Markdown
 
 ### Enter ***Title*** and ***Author*** of your report and click ***OK***
 
@@ -283,7 +306,7 @@ background-position: 93% 7%
 background-size: 8%
 class: left, center
 
-## R Markdown in action!
+## Our First R Markdown Report!
 
 &lt;img src="img/rmarkdown-in-action.png" width="110%" height="110%" style="display: block; margin: auto;" /&gt;
 
@@ -293,42 +316,53 @@ background-position: 95% 8%
 background-size: 8%
 class: inverse, middle, center
 
-# How R Markdown Works
+# How R Markdown Works (under the hood)
 
 ---
 background-image: url(img/how-rmd-works.png)
-background-position: 50% 50%
-background-size: 96%
-class: left, middle
+background-position: 50% 78%
+background-size: 85%
+class: top, center
+
+### R Markdown is made up of three elements
 
 ---
-background-image: url(img/rmarkdown.png)
-background-position: 8% 95%
-background-size: 8%
-class: center, middle
+class: left, top
 
-# Rmarkdown combines metadata, R Code *and* markdown
+# Rmarkdown combines metadata, markdown, *and* R code 
 
 &lt;img src="img/r-plus-md.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
 
-### .yaml = Metadata 
-### .md = Prose   
-### .R = Code    
+&lt;br&gt;
+
+#### The result is a file framework for creating reproducible reports using YAML, Markdown, and computer code
+
+&lt;br&gt;
+
+`.yaml` = Metadata  
+`.md` = Prose   
+`.R` = Code     
+
+
 
 ---
 background-image: url(img/rmarkdown.png)
 background-position: 93% 10%
 background-size: 8%
 
-# R Markdown
+# R Markdown: YAML
 
 ## `.yaml` = Metadata
 ### ~~`.md` = Prose~~  
 ### ~~`.R` = Code~~
 
-&lt;br&gt;&lt;br&gt;
+--
 
-### YAML stands for *YAML Ain't Markup Language* (funny, huh?)
+### YAML is a human friendly data serialization standard for all programming languages.
+
+--
+
+### YAML stands for *'YAML Ain't Markup Language'* (funny, huh?)
 
 
 ---
@@ -340,7 +374,7 @@ background-size: 8%
 
 &lt;br&gt;&lt;br&gt;
 
-### YAML contains the information about what kind of output we're going to create
+### YAML contains the information about the document we're going to create
 
 ```yaml
 ---
@@ -353,27 +387,69 @@ output: html_document
 
 ---
 background-image: url(img/rmarkdown.png)
-background-position: 7% 96%
+background-position: 93% 10%
 background-size: 8%
 
-# YAML output options: table of contents 
+# R Markdown: YAML format
 
-### `toc:` can be set to `true` or `false`
+&lt;br&gt;&lt;br&gt;
 
-### `toc_float:` can be set to `true` or `false`
-
-### `toc_depth:` set numerically `0` - `6`
+&lt;img src="img/yaml-formatting-01.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 background-image: url(img/rmarkdown.png)
 background-position: 93% 10%
 background-size: 8%
 
-# R Markdown: YAML settings
+# R Markdown: YAML format
 
 &lt;br&gt;&lt;br&gt;
 
-### Change `output` in the YAML header to the following: 
+&lt;img src="img/yaml-formatting-02.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# R Markdown: YAML
+
+&lt;br&gt;&lt;br&gt;
+
+### There are many YAML arguments and options
+
+### Indentation matters in YAML!!
+
+--
+
+&lt;br&gt;&lt;br&gt;
+
+&gt; Check out the [YAML Fieldguide](https://cran.r-project.org/web/packages/ymlthis/vignettes/yaml-fieldguide.html) for a comprehensive list
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# Example YAML output options
+
+## Table of contents: 
+
+### `toc:` logical (`true` or `false`)
+
+### `toc_float:` logical (`true` or `false`)
+
+### `toc_depth:` set numerically `0` - `6`
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# Exercise 2: create a floating table of contents
+
+### Change the `output` in the YAML header to the following: 
 
 ```yaml
 output: 
@@ -397,22 +473,20 @@ background-size: 8%
 
 ---
 background-image: url(img/rmarkdown.png)
-background-position: 97% 10%
+background-position: 7% 96%
 background-size: 8%
 
-# YAML output options: text highlighting and table options
+# Exercise 3: text highlighting and themes
 
 ### Add the following two options to your YAML header
 
 ```yaml
-
 output: 
   html_document: 
     toc: yes
     toc_float: yes
     highlight: zenburn
     theme: united
----
 
 ```
 
@@ -423,11 +497,43 @@ background-image: url(img/rmarkdown.png)
 background-position: 7% 96%
 background-size: 8%
 
-# YAML output options: table of contents 
+# YAML: text highlighting and theme options 
 
-### Floating table of contents (rendered)
+### Text highlighting and theme options (rendered)
 
-&lt;img src="img/yaml-highlight-theme.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/yaml-highlight-theme.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# More YAML options
+
+### You can change the YAML contents using the settings (small gear)
+
+&lt;img src="img/knitr-settings.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# Edit R Markdown Document Options
+
+.pull-left[
+
+#### This window gives us the ability to manually change some of the YAML settings (but not all of them!)
+
+]
+
+--
+
+.pull-right[
+
+&lt;img src="img/edit-rmd-output-options.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+]
 
 ---
 background-image: url(img/rmarkdown.png)
@@ -438,16 +544,23 @@ background-size: 8%
 
 ### YAML parameters can be referred to throughout the document
 
+.pull-left[
+
+***Create `params` in YAML header***
+
 ```yaml
----
 params: 
   param1: x
   param2: y
   data: df
----
 ```
+]
 
 --
+
+.pull-right[
+
+***Refer to `params` in .Rmd document***
 
 
 ```r
@@ -455,44 +568,63 @@ params$param1
 params$param2
 params$data
 ```
+]
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
 
-### Your turn 8
+# Exercise 4: Using YAML parameters
 
-###  Change the `params` option in the YAML header to use a different continent. Re-knit
+Add the following `params` option in the YAML header 
 
-
-```r
-gapminder %&gt;% 
-  filter(continent == params$continent) %&gt;% 
-  ggplot(aes(x = year, y = lifeExp, group = country, color = country)) +
-  geom_line(lwd = 1, show.legend = FALSE) + 
-  scale_color_manual(values = country_colors) +
-  theme_minimal(14) + 
-  theme(strip.text = element_text(size = rel(1.1))) +
-  ggtitle(paste("Continent:", params$continent))
+```yaml
+params: 
+  small_pressure: !r head(pressure)
 ```
+
+--
+
+Add this code to the end of the document
+
+
+&lt;img src="img/small-pressure.png" width="100%" height="100%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+
+### Knit the document again 
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+## See our new plot with the `params`
+
+We can see the new plot with the reduced sample size
+
+&lt;img src="img/params-plot.png" width="80%" height="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 background-image: url(img/rmarkdown.png)
 background-position: 93% 10%
-background-size: 10%
+background-size: 8%
 
 # YAML output formats
 
 Function       | Outputs
 -------------- | --------------------------
-`html_document()`   | HTML
-`pdf_document()`  | PDF
-`word_document()` | Word .docx
-`odt_document()`   | .odt
-`rtf_document()`   | .rtf
-`md_document()`   | Markdown
+`html_document()`   | HTML document
+`pdf_document()`  | PDF document
+`word_document()` | Word document
+`odt_document()`   | ODT document
+`rtf_document()`   | RTF document
+`md_document()`   | Markdown document
 `slidy_presentation()`   | Slidy Slides (HTML)
 `beamer_presentation()`   | Beamer Slides (PDF)
 `ioslides_presentation()`   | ioslides (HTML)
-`powerpoint_presentation()`   | Powerpoint Slides
+`powerpoint_presentation()`   | PowerPoint (pptx)
 
 ---
 background-image: url(img/rmarkdown.png)
@@ -502,40 +634,20 @@ background-size: 15%
 
 # R Markdown
 
-## **Prose** = *Markdown*
-## ~~Code~~
-## ~~Metadata~~
+### ~~`.yaml` = Metadata~~
+## `.md` = Prose
+### ~~`.R` = Code~~
 
-
-
-
-
-
-
-
-
-
-  
-
----
-background-image: url(img/rmarkdown.png)
-background-position: 93% 10%
-background-size: 15%
-
-
-# R Markdown
-
-## **Prose** = *Markdown*
-## ~~Code~~
-## ~~Metadata~~
 
 ---
 background-image: url(img/markdown.png)
 background-position: 93% 10%
-background-size: 15%
+background-size: 8%
 class: left, top
 
 # Basic Markdown Syntax
+
+## Italics &amp; Bold
 
 &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
@@ -543,7 +655,6 @@ class: left, top
 
 ```md
  *italic*   **bold**
-
  _italic_   __bold__
 ```
 
@@ -553,8 +664,7 @@ class: left, top
 
 .pull-right[
 
- *italic*   **bold**
-
+ *italic*   **bold**  
  _italic_   __bold__
 
 ]
@@ -562,10 +672,12 @@ class: left, top
 ---
 background-image: url(img/markdown.png)
 background-position: 93% 10%
-background-size: 15%
+background-size: 8%
 class: left, top
 
 # Basic Markdown Syntax
+
+## Headers
 
 &lt;br&gt;&lt;br&gt;&lt;br&gt;
 
@@ -573,9 +685,7 @@ class: left, top
 
 ```md
 # Header 1
-
 ## Header 2
-
 ### Header 3
 ```
 
@@ -585,19 +695,21 @@ class: left, top
 
 .pull-right[
 
-# Header 1
-## Header 2
-### Header 3
+# Header 1  
+## Header 2  
+### Header 3  
 
 ]
 
 ---
 background-image: url(img/markdown.png)
 background-position: 93% 10%
-background-size: 15%
+background-size: 8%
 class: left, top
 
 # Basic Markdown Syntax
+
+## Bullets &amp; Numeric Lists
 
 &lt;br&gt;&lt;br&gt;&lt;br&gt;
 
@@ -634,12 +746,12 @@ class: left, top
 ---
 background-image: url(img/markdown.png)
 background-position: 93% 10%
-background-size: 15%
+background-size: 8%
 class: left, top
 
 # Basic Markdown Syntax
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
+## Hyperlinks 
 
 ```md
 https://www.biomarin.com/
@@ -653,7 +765,6 @@ https://www.biomarin.com/
 
 [linked phrase](https://www.biomarin.com/)
 
-
 ---
 background-image: url(img/markdown.png)
 background-position: 93% 10%
@@ -663,7 +774,7 @@ class: left, top
 
 # Basic Markdown Syntax
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
+## Images 
 
 ```md
 ![](https://www.r-project.org/logo/Rlogo.png)
@@ -682,12 +793,14 @@ class: left, top
 ---
 background-image: url(img/markdown.png)
 background-position: 93% 10%
-background-size: 15%
+background-size: 8%
 class: left, top
 
 # Basic Markdown Syntax
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;br&gt;
+
+## Math Equations
 
 .pull-left[
 
@@ -713,16 +826,17 @@ $$ equation $$
 ---
 background-image: url(img/markdown.png)
 background-position: 93% 10%
-background-size: 15%
+background-size: 8%
 class: left, top
 
 # Basic Markdown Syntax
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+## Super scripts &amp; Strike-through 
 
 .pull-left[
 
 ```md
+superscript^2^
 ~~strikethrough~~
 ```
 ]
@@ -731,9 +845,105 @@ class: left, top
 
 .pull-right[
 
-~~strikethrough~~
+ superscript^2^  
+
+ ~~strikethrough~~
 
 ]
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# Exercise 5: Markdown Formatting
+
+Delete the top portion of the markdown in `01-monthly-report.Rmd`. 
+
+&lt;img src="img/delete-rmarkdown.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# Exercise 5: Markdown Formatting
+
+### Add the text below to your report 
+
+&gt; *This is a monthly report generated with RMarkdown, a literate programming tool for combining text and code.*
+
+--
+
+### Include the following formatting:
+
+1. make `monthly report` bold  
+2. include this hyperlink for `Rmarkdown`: https://rmarkdown.rstudio.com/
+3. format `code` as code. 
+
+--
+
+### Knit the document when you're finished
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# Exercise 5: Markdown Formatting (rendered)
+
+&lt;img src="img/rmarkdown-exercise.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Exercise 6: Tabsets 
+
+Remove the `toc` and `toc_float` options from your YAML header
+
+```yaml
+output: 
+  html_document: 
+    highlight: zenburn
+    theme: united
+params: 
+  small_pressure: !r head(pressure)
+```
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Exercise 6: Tabsets 
+
+Make the following changes to the `R Markdown` header sections
+
+
+&lt;img src="img/tabset-markdown.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+### Knit the document again
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Exercise 6: Tabsets (rendered)
+
+&lt;img src="img/tabset-1-render.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Exercise 6: Tabsets (rendered)
+
+&lt;img src="img/tabset-2-render.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
 
 ---
 background-image: url(img/rmarkdown.png)
@@ -742,146 +952,334 @@ background-size: 12%
 
 # R Markdown
 
-## ~~Prose~~
-## **Code** = *R code chunks*
-## ~~Metadata~~
+### ~~`.yaml` = Metadata~~
+### ~~`.md` = Prose~~
+## `.R` = Code
+
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Code chunks (`setup`)
+
+### The first bit of R code in our RMarkdown file is the `setup` chunk
+
+&lt;img src="img/setup-code-chunk.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+--
+
+### Chunks named '`setup`' are special because they can set global options
+
+--
+
+### '`include=FALSE`' means this code is run, but not displayed
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Code chunks (`setup`)
+
+### R Markdown document options come from the `knitr` package
+
+### We can access both the with sytnax below:
+
+&lt;img src="img/knitr-opts-set.png" width="75%" height="75%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Code chunks (`setup`)
+
+### The `echo=TRUE` option controls whether we want to display the code in the code chunk 
+
+--
+
+### Other common options regarding code are `eval`, `tidy`, `error`, `message`, and `warning`
+
+--
+
+### Advanced options can control language engines (`engine`), caching (`cache`, `dependson`), and plot animations (`fig.show`)
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Code chunks (`setup`)
+
+### Many options for code chunks 
+
+|Option          | Document Effect                              |
+|:-------------- |:-------------------------------------------- |
+|`include`       | run code, but do/don't print code and results|
+|`eval`          | do/don't evaluate the code                   |
+|`echo`          | run code, but don't print code               |
+|`message`       | do/don't print messages (e.g. from functions)|
+|`warning`       | do/don't print warnings                      |
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
 
 # Code chunks
 
-&lt;img src="img/code_chunk.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;img src="img/code-chunks.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
 
-### Code chunks
+# Code chunk fences
 
-&lt;img src="img/code_chunk_fences.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;&lt;br&gt;
+
+&lt;img src="img/code-chunk-fences.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
 
-### Code chunks
+# Code chunk names and arguments
 
-&lt;img src="img/code_chunk_opts.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/code-chunk-name-args.png" width="80%" height="80%" style="display: block; margin: auto;" /&gt;
 
----
-
-## Chunk options
-
-Option       | Effect
--------------- | --------------------------
-`include = FALSE`   | run the code but don't print it or results
-`eval = FALSE`   | don't evaluate the code
-`echo = FALSE`  | run the code and output but don't print code
-`message = FALSE` | don't print messages (e.g. from a function)
-`warning = FALSE`   | don't print warnings
-`fig.cap = "Figure 1`   | caption output plot with "Figure 1"
 
 --
 
-## See the [knitr web page](https://yihui.name/knitr/options/)
+### See the [knitr web page](https://yihui.name/knitr/options/) for complete list of options
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
 
-## Engines
+# Inserting code chunks
 
-## 52! Including **Python**, **Julia**, **C++**, **SQL**, **SAS**, and **Stata**
-
----
-
-## Insert code chunks with **`cmd/ctrl + alt/option + I`**
+### Use keyboard shortcuts **CMD/CTRL + I** or **ALT/OPTION + I**
 
 
-&lt;img src="img/rmarkdown_knit.png" width="30%" height="30%" style="display: block; margin: auto;" /&gt;
-
----
-
-## Edit code chunk options
-
-&lt;img src="img/chunk_setup_gui.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="img/insert-code-chunk.png" width="23%" height="23%" style="display: block; margin: auto;" /&gt;
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
 
-## Your turn 4 (open **`exercises.Rmd`**)
+# Edit code chunk options
 
-### Create a code chunk. You can type it in manually, use the keyboard short-cut (Cmd/Ctrl + Option/Alt + I), or use the "Insert" button above. Put the following code in it:
+### You can edit code chunk options using the icon (small gear)
+
+&lt;img src="img/code-chunk-settings.png" width="50%" height="50%" style="display: block; margin: auto;" /&gt;
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Code Chunk Engines
+
+## More and more code engines all the time 
+
 
 ```r
-gapminder %&gt;% 
-  slice(1:5) %&gt;% 
-  knitr::kable()
+names(knitr::knit_engines$get())
 ```
+
+```
+##  [1] "awk"       "bash"      "coffee"    "gawk"      "groovy"    "haskell"  
+##  [7] "lein"      "mysql"     "node"      "octave"    "perl"      "psql"     
+## [13] "Rscript"   "ruby"      "sas"       "scala"     "sed"       "sh"       
+## [19] "stata"     "zsh"       "highlight" "Rcpp"      "tikz"      "dot"      
+## [25] "c"         "cc"        "fortran"   "fortran95" "asy"       "cat"      
+## [31] "asis"      "stan"      "block"     "block2"    "js"        "css"      
+## [37] "sql"       "go"        "python"    "julia"     "sass"      "scss"
+```
+
+## Even SAS!
+
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# Exercise 7: code chunks (kable)
+
+### Create a new heading and code chunk 
+
+Create a new `Tables` level three header under the `Summary` heading, 
+
+```md
+### Tables
+```
+
+--
+
+Insert the following code chunk under `Tables` (*manually, with the keyboard short-cut, or use the "Insert" button*)
+
+&lt;img src="img/kable-code-chunk.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
 ### Knit the document
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
 
-## Your turn 5
-  
-### Add `echo = FALSE` to the code chunk above and re-knit
+# Exercise 7: code chunks (kable rendered)
 
-### Remove `echo = FALSE` from the code chunk and move it to `knitr::opts_chunk$set()` in the `setup` code chunk. Re-knit. What's different about this?
+We can see the `small_pressure` parameter from the YAML has been rendered in the new `Tables` tab. `kable` tables are great for presenting small, summary tables.
 
+&lt;img src="img/kable-chunk-rendered.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+Read more about `kable` table options [here](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html) 
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 96%
+background-size: 8%
+
+# Exercise 8: code chunks (paged)
+
+### We are going to repeat the process above, but with a larger table (`mtcars`)
+
+Insert the following code chunk above the `knitr::kable()` output: 
+
+&lt;img src="img/paged-code-chunk.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+### Knit the document
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 7% 96%
+background-size: 8%
+
+# Exercise 8: code chunk (paged rendered)
+
+### Paged tables are great for larger datasets
+
+&lt;img src="img/paged-chunk-render.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Exercise 8: paged tables
+
+&lt;img src="img/paged-chunk-render.gif" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Inline R Code
+
+### R Markdown also supports inline R code 
 
 --
 
-### **Make sure to remove `knitr::opts_chunk$set(echo = FALSE)`**
+
+&lt;img src="img/inline-r-code-01.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
 
-### Inline Code
+# Inline R Code
 
-&lt;img src="img/inline_code.png" width="75%" height="75%" style="display: block; margin: auto;" /&gt;
+### Inline R code allows us to include summaries of our analysis in the report
 
----
+--
 
-### Inline Code
+&lt;img src="img/inline-r-code-02.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
 
-&lt;img src="img/inline_code_highlight.png" width="75%" height="75%" style="display: block; margin: auto;" /&gt;
-
----
-
-### Your turn 6
-
-### Remove `eval = FALSE` so that R Markdown evaluates the code
-
-### Use `summarize()` and `n_distinct()` to get the the number of unique years in gapminder and save the results as `n_years`
-
-### Use inline code to describe the data set in the text below the code chunk and re-knit.
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Exercise 9: Add Inline Code
+
+### We're going to add a Pearson correlation between speed and stopping distance to the `01-monthy-report.Rmd` 
+
+--
+
+### Include the following code under the `Summary` level three header
+
+
+```r
+The correlation between speed and stopping distance 
+is `r cor(x = cars$speed, y = cars$dist)`
+```
+
+--
+
+### Knit the document again
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
+
+# Exercise 9: Add Inline Code (rendered)
+
+
+&lt;img src="img/inline-code-rendered.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 50%
+background-size: 20%
 
 # Make cool stuff in R Markdown!
 
-## bookdown
-## blogdown
+## `bookdown`
+## `blogdown`
 ## these slides!
 
 ---
+background-image: url(img/rmarkdown.png)
+background-position: 93% 10%
+background-size: 8%
 class: left, top
 
 # Resources
 
-### [R Markdown](https://bookdown.org/yihui/rmarkdown/): A comprehensive but friendly introduction to R Markdown and friends. Free online.
+&lt;br&gt;
 
-### Check out the `citr` package for easy citation insertion and .bib management
+- **YAML**: check out the [`ymlthis` package](https://r-lib.github.io/ymlthis/) for tools and documentation for working with YAML
 
-### [R for Data Science](http://r4ds.had.co.nz/): A comprehensive but friendly introduction to the tidyverse. Free online.
+- **Markdown**: [Commonmark](https://commonmark.org/help/tutorial) has a quick ten-twenty minute tutorial on markdown.
 
-### [R Markdown for Scientists](https://rmd4sci.njtierney.com/): R Markdown for Scientists workshop material
+- [R Markdown](https://bookdown.org/yihui/rmarkdown/): A comprehensive but friendly introduction to R Markdown and friends. Free online!
 
-### Do the ten-twenty minute tutorial on markdown at https://commonmark.org/help/tutorial. 
+- [R for Data Science](http://r4ds.had.co.nz/): A comprehensive but friendly introduction to the tidyverse. Free online.
 
-### check out the [`ymlthis` package](https://r-lib.github.io/ymlthis/) for tools and documentation for working with YAML
+- [R Markdown for Scientists](https://rmd4sci.njtierney.com/): R Markdown for Scientists workshop material
+
 
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
-<script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
-});
+<script>var slideshow = remark.create();
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
 });
@@ -946,24 +1344,7 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
       links[i].target = '_blank';
     }
   }
-})();
-// adds .remark-code-has-line-highlighted class to <pre> parent elements
-// of code chunks containing highlighted lines with class .remark-code-line-highlighted
-(function(d) {
-  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
-  const preParents = [];
-  const findPreParent = function(line, p = 0) {
-    if (p > 1) return null; // traverse up no further than grandparent
-    const el = line.parentElement;
-    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
-  };
-
-  for (let line of hlines) {
-    let pre = findPreParent(line);
-    if (pre && !preParents.includes(pre)) preParents.push(pre);
-  }
-  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
-})(document);</script>
+})();</script>
 
 <script>
 slideshow._releaseMath = function(el) {
