@@ -51,7 +51,7 @@ background-size: 8%
 
 ## Make sure you've created a Github account
 
-If you haven't, Head over to Github and create a free account. 
+If you haven't, head over to Github and create a free account. 
 
 .pull-left[
 
@@ -941,7 +941,7 @@ background-size: 8%
 
 ### Include the following formatting:
 
-1. make `monthly report` bold  
+1. make `monthly report` italic  
 2. include this hyperlink for `Rmarkdown`: https://rmarkdown.rstudio.com/
 3. format `code` as code. 
 
@@ -1365,6 +1365,7 @@ class: left, top
 - [R Markdown for Scientists](https://rmd4sci.njtierney.com/): R Markdown for Scientists workshop material
 
 
-```{r chrome_print, echo=FALSE, results='hide'}
-# pagedown::chrome_print("04-rmarkdown-intro.html")
+```{r chrome_print, eval=FALSE, include=FALSE}
+pagedown::chrome_print("04-rmarkdown-intro.html")
 ```
+

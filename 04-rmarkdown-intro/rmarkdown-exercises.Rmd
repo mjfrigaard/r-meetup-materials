@@ -11,6 +11,8 @@ output:
 params: 
   data_dir: !r file.path("data/starwars.rds")
   list_vars: !r c("films", "vehicles", "starships")
+
+always_allow_html: true
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +32,7 @@ knitr::opts_chunk$set(warning = FALSE,
 
 # Objectives
 
-This document provides some exercises to improve your understanding of R Markdown. Please see the accompanying slides in this directory for more information.
+This document provides some exercises to improve your understanding of R Markdown. Please see the [accompanying slides](https://mjfrigaard.github.io/rep-res-rmarkdown.github.io/Index.html#1) for more information.
 
 ## Create a new R Markdown file {.tabset}
 
