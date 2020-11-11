@@ -1,0 +1,211 @@
+---
+title: "Version Control with Git & Github"
+subtitle: "BioMarin CSM: managing changes, versioning, and collaboration"  
+author: 
+  - "Martin Frigaard, Cinical Programmer"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", dpi = 320, fig.height = 4)
+library(tidyverse)
+library(reprex)
+library(xaringan)
+library(pagedown)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+xaringanthemer::style_duo_accent(primary_color = "#035AA6", secondary_color = "#03A696")
+# xaringan::inf_mr() # for instant knitting and reviewing
+```
+
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 50% 30%
+background-size: 20%
+class: center, top
+
+```{r inf_mr, eval=FALSE, include=FALSE}
+xaringan::inf_mr()
+```
+
+
+<br><br><br><br><br><br><br><br><br><br><br>
+
+## Keeping track of your changes, versions, and collaborators with Git, Github, and RStudio
+
+---
+background-image: url(img/GitHub-Mark-Light-120px-plus.png)
+background-position: 50% 90%
+background-size: 14%
+class: inverse, center, top
+
+# What is Git?
+
+--
+
+### *Git is a version control system*
+
+--
+
+### *Version control systems are typically used to track and manage changes to source code files*
+
+--
+
+### *Git was built to help design software, with lots of collaborators working on multiple files at the same time*
+
+
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 9%
+class: left, top
+
+# Git ***...(the bad news)***
+
+--
+
+### Git can be frustrating to learn
+
+--
+
+> *This is because the command line is cryptic and leaves little room for error*
+
+--
+
+### Version control is something *we do*, not just something *we use*
+
+--
+
+> *Git control forces us to formalize processes and takes planning*
+
+--
+
+### Git is complicated because *change is complicated*
+
+--
+
+> *"Git isn't difficult because you're not smart enough, or because you missed an important meeting. Git is difficult because Git is difficult."* - David Demaree, Git For Humans
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 9%
+class: left, top
+
+# Downloading Git
+
+### You can download Git from this website:
+
+https://git-scm.com/
+
+<br>
+
+```{r git-scm, echo=FALSE, out.height='60%', out.width='60%'}
+knitr::include_graphics(path = "img/git-scm.png")
+```
+
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 9%
+class: left, top
+
+# Installing Git (mac)    
+
+### Installing Git on macOS is easy (it's already installed on most new mac computers)
+
+--
+
+### We can check the version with `git --version`
+
+```{bash}
+git --version
+```
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 9%
+class: left, top
+
+# Installing Git (Windows)
+
+### After downloading Git for windows, you will have access to Git Bash 
+
+
+
+### Git Bash works similarly to a Unix-based system such as macOS/Linux
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 9%
+class: left, top
+
+# Terminal in RStudio.Cloud
+
+### If you're using RStudio.Cloud, you'll have access to a Terminal pane
+
+### You can check the Git version in the Terminal pane
+
+```{r rstudio-cloud-git-version, out.height="80%", out.width="80%", echo=FALSE}
+knitr::include_graphics(path = "img/rstudio-cloud-git-version.png")
+```
+
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 9%
+class: left, top
+
+# Command line basics
+
+### We're going to start with some basic command line tools 
+
+```{bash}
+ls
+```
+
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# Command line (in RStudio)
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+# Initiate A Git Repository
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+

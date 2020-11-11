@@ -4,7 +4,7 @@
     <title>Version Control with Git &amp; Github</title>
     <meta charset="utf-8" />
     <meta name="author" content="Martin Frigaard, Cinical Programmer" />
-    <meta name="date" content="2020-10-27" />
+    <meta name="date" content="2020-11-09" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -13,9 +13,9 @@
 class: center, middle, inverse, title-slide
 
 # Version Control with Git &amp; Github
-## BioMarin Data Management: managing changes, versioning, and collaboration
+## BioMarin CSM: managing changes, versioning, and collaboration
 ### Martin Frigaard, Cinical Programmer
-### 2020-10-27
+### 2020-11-09
 
 ---
 
@@ -24,21 +24,35 @@ class: center, middle, inverse, title-slide
 
 
 
-class: center, middle
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 50% 30%
+background-size: 20%
+class: center, top
 
-# Git and version control
 
-### Keeping track of your changes, versions, and collaborators with RStudio
+
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+## Keeping track of your changes, versions, and collaborators with Git, Github, and RStudio
 
 ---
 background-image: url(img/GitHub-Mark-Light-120px-plus.png)
 background-position: 50% 90%
-background-size: 20%
+background-size: 14%
 class: inverse, center, top
 
-# Git
+# What is Git?
+
+--
+
+### *Git is a version control system*
+
+--
 
 ### *Version control systems are typically used to track and manage changes to source code files*
+
+--
 
 ### *Git was built to help design software, with lots of collaborators working on multiple files at the same time*
 
@@ -47,18 +61,18 @@ class: inverse, center, top
 ---
 background-image: url(img/GitHub-Mark-120px-plus.png)
 background-position: 90% 10%
-background-size: 10%
+background-size: 9%
 class: left, top
 
-# Git***...the bad news first!***
+# Git ***...(the bad news)***
 
 --
 
-### Git is frustrating to learn
+### Git can be frustrating to learn
 
 --
 
-#### The command line is cryptic and leaves little room for error
+&gt; *This is because the command line is cryptic and leaves little room for error*
 
 --
 
@@ -66,11 +80,11 @@ class: left, top
 
 --
 
-#### Git control forces us to formalize processes and takes planning
+&gt; *Git control forces us to formalize processes and takes planning*
 
 --
 
-### Git is complicated because change is complicated
+### Git is complicated because *change is complicated*
 
 --
 
@@ -79,7 +93,7 @@ class: left, top
 ---
 background-image: url(img/GitHub-Mark-120px-plus.png)
 background-position: 90% 10%
-background-size: 10%
+background-size: 9%
 class: left, top
 
 # Downloading Git
@@ -88,34 +102,87 @@ class: left, top
 
 https://git-scm.com/
 
-&lt;img src="img/git-scm.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+
+&lt;img src="img/git-scm.png" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 background-image: url(img/GitHub-Mark-120px-plus.png)
 background-position: 90% 10%
-background-size: 10%
+background-size: 9%
 class: left, top
 
-# Installing Git (mac)
+# Installing Git (mac)    
 
-### Installing Git on macOS is 
+### Installing Git on macOS is easy (it's already installed on most new mac computers)
+
+--
+
+### We can check the version with `git --version`
+
+
+```bash
+git --version
+```
+
+```
+## git version 2.24.1 (Apple Git-126)
+```
 
 ---
 background-image: url(img/GitHub-Mark-120px-plus.png)
 background-position: 90% 10%
-background-size: 10%
+background-size: 9%
 class: left, top
 
 # Installing Git (Windows)
 
+### After downloading Git for windows, you will have access to Git Bash 
+
+
+
+### Git Bash works similarly to a Unix-based system such as macOS/Linux
+
 ---
 background-image: url(img/GitHub-Mark-120px-plus.png)
 background-position: 90% 10%
-background-size: 10%
+background-size: 9%
+class: left, top
+
+# Terminal in RStudio.Cloud
+
+### If you're using RStudio.Cloud, you'll have access to a Terminal pane
+
+### You can check the Git version in the Terminal pane
+
+&lt;img src="img/rstudio-cloud-git-version.png" width="80%" height="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 9%
 class: left, top
 
 # Command line basics
+
+### We're going to start with some basic command line tools 
+
+
+```bash
+ls
+```
+
+```
+## 03-git-version-control.Rmd
+## 03-git-version-control.html
+## img
+## libs
+## rstudio-ide.pdf
+## xaringan-themer.css
+```
+
 
 ---
 background-image: url(img/GitHub-Mark-120px-plus.png)
@@ -139,7 +206,13 @@ background-position: 90% 10%
 background-size: 10%
 class: left, top
 
-# 
+
+---
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 90% 10%
+background-size: 10%
+class: left, top
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
