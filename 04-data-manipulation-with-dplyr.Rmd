@@ -27,9 +27,109 @@ xaringanthemer::style_duo_accent(primary_color = "#035AA6", secondary_color = "#
 # xaringan::inf_mr() # for instant knitting and reviewing
 ```
 
+```{r inf_mr, eval=FALSE, include=FALSE}
+xaringan::inf_mr()
+```
+
 class: inverse, center, bottom
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 50% 10%
 background-size: 35%
 
 # dplyr = a tidyverse package for data manipulation
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 12%
+
+# `dplyr` = "D + ply + ARRR"
+
+<br>
+
+.pull-left[
+
+### Pliers are a tools for gripping & manipulation common objects 
+
+### The `dplyr` package has a variety of verbs for performing common data manipulations
+
+]
+
+<br><br>
+
+.pull-right[
+
+```{r pliers, out.height='70%', out.width='70%', echo=FALSE}
+knitr::include_graphics(path = "img/pliers.png")
+```
+
+
+]
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 9%
+
+# `dplyr` verbs
+
+## There are four primary verbs for data manipulation in `dplyr`
+
+### `select()` 
+
+### `filter()`  
+
+### `arrange()` 
+
+### `mutate()`
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 9%
+
+# The `starwars` dataset  
+
+### These data come from the Star Wars API: 
+
+```{r star-wars-jpeg, out.height='60%', out.width='60%', echo=FALSE}
+knitr::include_graphics(path = "img/star-wars.jpeg")
+```
+
+### Read more about the data here: https://dplyr.tidyverse.org/reference/starwars.html
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 9%
+background-size: 9%
+
+# Load the `starwars` dataset
+
+### The `starwars` data comes from the `dplyr` package, so we can access it using the code below:
+
+```{r starwars-dplyr, eval=FALSE}
+install.packages("dplyr")
+library(dplyr)
+starwars <- dplyr::starwars
+```
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 9%
+background-size: 9%
+
+# View the `starwars` dataset
+
+#### Take a look at the dataset using `dplyr::glimpse()`
+
+```{r starwars-glimpse}
+glimpse(starwars)
+```
+
+

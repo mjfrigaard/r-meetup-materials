@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="author" content="Martin Frigaard" />
     <meta name="date" content="2020-11-13" />
-    <script src="04-data-manipulation-with-dplyr_files/header-attrs-2.5.3/header-attrs.js"></script>
+    <script src="04-data-manipulation-with-dplyr_files/header-attrs/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -24,12 +24,127 @@ class: center, middle, inverse, title-slide
 
 
 
+
+
 class: inverse, center, bottom
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 50% 10%
 background-size: 35%
 
 # dplyr = a tidyverse package for data manipulation
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 12%
+
+# `dplyr` = "D + ply + ARRR"
+
+&lt;br&gt;
+
+.pull-left[
+
+### Pliers are a tools for gripping &amp; manipulation common objects 
+
+### The `dplyr` package has a variety of verbs for performing common data manipulations
+
+]
+
+&lt;br&gt;&lt;br&gt;
+
+.pull-right[
+
+&lt;img src="img/pliers.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 9%
+
+# `dplyr` verbs
+
+## There are four primary verbs for data manipulation in `dplyr`
+
+### `select()` 
+
+### `filter()`  
+
+### `arrange()` 
+
+### `mutate()`
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 9%
+
+# The `starwars` dataset  
+
+### These data come from the Star Wars API: 
+
+&lt;img src="img/star-wars.jpeg" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
+
+### Read more about the data here: https://dplyr.tidyverse.org/reference/starwars.html
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 9%
+background-size: 9%
+
+# Load the `starwars` dataset
+
+### The `starwars` data comes from the `dplyr` package, so we can access it using the code below:
+
+
+```r
+install.packages("dplyr")
+library(dplyr)
+starwars &lt;- dplyr::starwars
+```
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 9%
+background-size: 9%
+
+# View the `starwars` dataset
+
+#### Take a look at the dataset using `dplyr::glimpse()`
+
+
+```r
+glimpse(starwars)
+```
+
+```
+#&gt;  Rows: 87
+#&gt;  Columns: 14
+#&gt;  $ name       &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "D…
+#&gt;  $ height     &lt;int&gt; 172, 167, 96, 202, 150, 178, 165, 97, …
+#&gt;  $ mass       &lt;dbl&gt; 77, 75, 32, 136, 49, 120, 75, 32, 84, …
+#&gt;  $ hair_color &lt;chr&gt; "blond", NA, NA, "none", "brown", "bro…
+#&gt;  $ skin_color &lt;chr&gt; "fair", "gold", "white, blue", "white"…
+#&gt;  $ eye_color  &lt;chr&gt; "blue", "yellow", "red", "yellow", "br…
+#&gt;  $ birth_year &lt;dbl&gt; 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 4…
+#&gt;  $ sex        &lt;chr&gt; "male", "none", "none", "male", "femal…
+#&gt;  $ gender     &lt;chr&gt; "masculine", "masculine", "masculine",…
+#&gt;  $ homeworld  &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Tato…
+#&gt;  $ species    &lt;chr&gt; "Human", "Droid", "Droid", "Human", "H…
+#&gt;  $ films      &lt;list&gt; [&lt;"The Empire Strikes Back", "Revenge…
+#&gt;  $ vehicles   &lt;list&gt; [&lt;"Snowspeeder", "Imperial Speeder Bi…
+#&gt;  $ starships  &lt;list&gt; [&lt;"X-wing", "Imperial shuttle"&gt;, &lt;&gt;, …
+```
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

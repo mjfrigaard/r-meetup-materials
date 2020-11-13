@@ -1,0 +1,54 @@
+---
+title: "File managemnt"
+author: "Martin Frigaard"
+date: "11/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(janitor)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## File management 
+
+```{r dir_tree}
+# fs::dir_tree(".", recurse = FALSE)
+```
+
+I want newest folder in `data` directory. 
+
+```{r recent_dir}
+fs::dir_info("data", recurse = TRUE) %>% 
+    dplyr::select(path, type, ends_with("time")) %>% 
+    filter(type == "directory") %>% 
+    arrange(desc(birth_time)) %>% 
+    select(path) %>% 
+    slice(1) %>% 
+    as_vector() -> recent_dir
+
+recent_dir
+```
+
+And the oldest data file in the most `recent_dir`. 
+
+```{r data_file_path}
+fs::dir_info(recent_dir) %>% 
+    # sorting to oldest
+    dplyr::arrange(modification_time) %>% 
+    dplyr::select(path) %>% 
+    slice(1) %>% 
+    as_vector() -> oldest_data_file_path
+
+oldest_data_file_path
+```
+
+## Import
+
+Now test the import. 
+
+```{r import-oldest_data_file_path}
+readr::read_rds(oldest_data_file_path)
+```
+
