@@ -1,0 +1,802 @@
+---
+title: "Tables with R Markdown"
+author: "Martin Frigaard"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: yes
+    df_print: paged
+    highlight: pygments
+    theme: simplex
+    code_folding: hide
+    
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(janitor)
+# folders
+folders <- c("img", "code", "data")
+purrr::map(.x = folders, .f = fs::dir_create)
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE, 
+                      warning = FALSE, 
+                      comment = "#> ",
+                      fig.path = "img/")
+# knit options
+knitr::opts_knit$set(
+  width = 78,
+  progress = FALSE
+)
+```
+
+# Tables in HTML
+
+R Markdown gives a variety of table options, but the features for interactive tables are best viewed in HTML files. This document will outline some of the packages and options for displaying tabular data in HTML reports with R Markdown. 
+
+
+## Packages
+
+The packages we'll need are loaded below:
+
+```{r packages, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(rhandsontable)
+library(listviewer)
+```
+
+
+## Data Import {.tabset}
+
+We'll import these data with `readxl`. I like to pass the import over to `head()` before assigning to an object so I can see what it looks like. 
+
+```{r test-import}
+readxl::read_excel(path = "data/270301_totals_topline.xlsx") %>% 
+  utils::head()
+```
+
+Well, we know we can change the format on the first column (`Report Date`), but the rest of these can be text.
+
+```{r col_types}
+readxl::read_excel(path = "data/270301_totals_topline.xlsx",  
+                   col_types = c("date", "text", "text", "text", "text", "text",
+                                 "text", "text", "text", "text", "text", "text",
+                                 "text", "text", "text", "text", "text")) %>% 
+  utils::head()
+```
+
+We don't need `comp`--drop this column using `range`
+
+```{r range}
+readxl::read_excel(path = "data/270301_totals_topline.xlsx",  
+                   col_types = c("date", "text", "text", "text", "text", "text",
+                                 "text", "text", "text", "text", "text", "text",
+                                 "text", "text", "text", "text"), 
+                                  range = cell_cols("A:P")) %>% head()
+```
+
+This is getting better, but I want to move the third row up to column names. 
+
+```{r}
+readxl::read_excel(path = "data/270301_totals_topline.xlsx",  
+                   col_types = c("date", "text", "text", "text", "text", "text",
+                                 "text", "text", "text", "text", "text", "text",
+                                 "text", "text", "text", "text"), 
+                                  range = cell_cols("A:P")) %>% 
+  # move the third row up to the names
+  janitor::row_to_names(dat = ., row_number = 3) %>% 
+  names() -> totals_names
+
+totals_names %>% 
+  tibble::as_tibble() %>% 
+  
+  transmute(column_name = stringr::str_remove_all(string = value, 
+                                                  pattern = "\r\n"))
+```
+
++ First we build two vectors with column names. The `OQ` stands for Open Queries, and `PO` is 'Pages Overdue'. 
+
++ Second, we import the data from the excel file and list each column type. We specify the range and column type (assuming it doesn't change).
+
+```{r read_excel-OpenQueries}
+# open query section 
+all_names <- c("Report Date", "Total Open Queries (change in 3 business days)", 
+  "Less than 10 (OQ)", "Between 10-30 (OQ)", "Greater than 30 (OQ)", 
+  "Total Answered Queries", "CRA To Site", "DM To Site", "System Queries",
+  "Total Pages Overdue", "less than 10 days (PO)", "Between 10-30 days (PO)", 
+  "Greater than 30 days (PO)", "Missing Pages", "Unmonitored", "Monitored")
+
+# readxl::excel_sheets("data/270301_totals_topline.xlsx")
+Totals <- readxl::read_excel(path = "data/270301_totals_topline.xlsx", 
+                                  col_types = c("date", "text", "text", 
+                                  "text", "text", "text", "text", "text", 
+                                  "text", "text", "text", "text", "text", 
+                                  "text", "text", "text"), 
+                                  sheet = "Totals",
+                                  range = cell_cols("A:P")) %>% 
+  janitor::row_to_names(dat = ., row_number = 3)
+# set names
+Totals <- Totals %>% 
+  magrittr::set_colnames(x = ., value = all_names)
+```
+
++ Below we remove the change values in parentheses using a regular expression and format the date column. 
+
++ We also convert all the metrics to numeric. 
+
+```{r remove-diff}
+Totals %>% 
+  purrr::map_df(.x = ., .f = str_remove_all, pattern = "\\([^\\d]*(\\d+)\\)|\\r|\\n") %>% 
+  mutate(`Report Date` = lubridate::ymd(`Report Date`)) %>% 
+  mutate_if(is.character, as.numeric) -> Totals
+head(Totals)
+```
+
+We will calculate the `(diff)` manually below.
+
+### Queries (Open Queries)
+
+We're going to split these data into smaller datasets according to the excel file layout. 
+
+```{r open-queries, echo=FALSE, out.height='80%', out.width='80%'}
+knitr::include_graphics("img/open-queries.png")
+```
+
+```{r OpenQueries}
+Totals %>% 
+  dplyr::select(`Report Date`:`Greater than 30 (OQ)`) %>% 
+  janitor::clean_names() %>% 
+  dplyr::rename(total_open_queries = total_open_queries_change_in_3_business_days) -> OpenQueries
+
+OpenQueries
+```
+
+Below we recalculate the diffs for graphical display. We also reorganize the data so each column is in the correct order. 
+
+```{r wrangle-diff-OpenQueries}
+OpenQueries %>% 
+  dplyr::mutate(
+         diff_total_3_days = total_open_queries - lag(total_open_queries),
+         diff_less_than_10_oq = less_than_10_oq - lag(less_than_10_oq),
+         diff_between_10_30_oq = between_10_30_oq - lag(between_10_30_oq),
+         diff_greater_than_30_oq = greater_than_30_oq - lag(greater_than_30_oq)) %>% 
+  dplyr::select(report_date, 
+                contains("total"),
+                contains("less_than"),
+                contains("between"),
+                contains("greater"),
+                everything()) -> OpenQueries
+head(OpenQueries)
+```
+
+### Queries (Answered Queries)
+
+These are from the 'Answered Queries' section (shown below)
+
+```{r answered-queries, echo=FALSE, out.height='80%', out.width='80%'}
+knitr::include_graphics("img/answered-queries.png")
+```
+
+
+```{r AnsweredQueries}
+Totals %>% 
+  dplyr::select(`Report Date`,
+                `Total Answered Queries`:`System Queries`) %>% 
+  janitor::clean_names() -> AnsweredQueries
+head(AnsweredQueries)
+```
+
+Below we recalculate the diffs for graphical display. We also reorganize the data so each column is in the correct order.
+
+```{r diff-AnsweredQueries}
+AnsweredQueries %>% 
+  dplyr::mutate(
+         diff_total_answered_queries = total_answered_queries - lag(total_answered_queries),
+         diff_cra_to_site = cra_to_site - lag(cra_to_site),
+         diff_dm_to_site = dm_to_site - lag(dm_to_site),
+         diff_system_queries = system_queries - lag(system_queries)) %>% 
+  dplyr::select(report_date, 
+                contains("answer"),
+                contains("cra"),
+                contains("dm"),
+                everything()) -> AnsweredQueries
+head(AnsweredQueries)
+```
+
+### eCRF (Pages Overdue)
+
+These are the columns from the `eCRF` section (displayed below)
+
+```{r pages-overdue, echo=FALSE, out.height='80%', out.width='80%'}
+knitr::include_graphics("img/pages-overdue.png")
+```
+
+
+```{r PagesOverdue}
+Totals %>% 
+  dplyr::select(`Report Date`, 
+                `Total Pages Overdue`:`Greater than 30 days (PO)`) %>% 
+  janitor::clean_names() -> PagesOverdue
+head(PagesOverdue)
+```
+
+Below we recalculate the diffs for graphical display. We also reorganize the data so each column is in the correct order.
+
+```{r diff-cols-PagesOverdue}
+PagesOverdue %>% 
+    dplyr::mutate(
+         diff_total_pages_overdue = total_pages_overdue - lag(total_pages_overdue),
+         diff_less_than_10_days_po = less_than_10_days_po - lag(less_than_10_days_po),
+         diff_between_10_30_days_po = between_10_30_days_po - lag(between_10_30_days_po),
+         diff_greater_than_30_days_po = greater_than_30_days_po - lag(greater_than_30_days_po)) %>%
+    dplyr::select(report_date, 
+                contains("total"),
+                contains("less_than"),
+                contains("between"),
+                contains("greater"),
+                everything()) -> PagesOverdue
+head(PagesOverdue)
+```
+
+
+### eCRF (Monitoring Listing)
+
+```{r monitoring-listing, echo=FALSE, out.height='80%', out.width='80%'}
+knitr::include_graphics(path = "img/monitoring-listing.png")
+```
+
+
+```{r MonitoringListing}
+Totals %>% 
+  dplyr::select(`Report Date`, 
+                `Missing Pages`:Monitored) %>% 
+  janitor::clean_names() -> MonitoringListing
+
+head(MonitoringListing)
+```
+
+Below we recalculate the diffs for graphical display. We also reorganize the data so each column is in the correct order.
+
+```{r diff-MonitoringListing}
+MonitoringListing %>% 
+  dplyr::mutate(
+         diff_unmonitored = unmonitored - lag(unmonitored),
+         diff_monitored = monitored - lag(monitored)) %>% 
+      dplyr::select(report_date, 
+                missing_pages,
+                contains("un"),
+                contains("monitored"),
+                everything()) -> MonitoringListing
+head(MonitoringListing)
+```
+
+
+## Create JSON columns for display {.tabset}
+
+This code will create the chart variables, which we can render as a `tristate` graph, each in separate columns. First we have to convert the difference columns to JSON so it can be rendered. 
+
+### Open Queries 
+
+Each `diff` value gets created into a `tristate` JSON object. 
+
+```{r tristate-OpenQueries}
+# create max row
+op_maxrow <- nrow(OpenQueries)
+# tristate_total_3_days
+OpenQueries$tristate_total_3_days = c(sapply(1:op_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = OpenQueries$diff_total_3_days[1:op_maxrow],
+                                              options = list(type = "tristate")))))
+
+OpenQueries$tristate_less_than_10_oq = c(sapply(1:op_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = OpenQueries$diff_less_than_10_oq[1:op_maxrow],
+                                              options = list(type = "tristate")))))
+
+OpenQueries$tristate_between_10_30_oq = c(sapply(1:op_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = OpenQueries$diff_between_10_30_oq[1:op_maxrow],
+                                              options = list(type = "tristate")))))
+
+OpenQueries$tristate_greater_than_30_oq = c(sapply(1:op_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = OpenQueries$diff_greater_than_30_oq[1:op_maxrow],
+                                              options = list(type = "tristate")))))
+
+OpenQueries %>% 
+  dplyr::select(contains("tristate")) %>% 
+  listviewer::jsonedit(listdata = ., mode = 'view')
+```
+
+
+### Answered Queries 
+
+We also create JSON columns for the `diff` values in `AnsweredQueries`
+
+```{r tristate-AnsweredQueries}
+# create max row
+aq_maxrow <- nrow(AnsweredQueries)
+# tristate_total_3_days
+AnsweredQueries$tristate_total_answered_queries = c(sapply(1:aq_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = AnsweredQueries$diff_total_answered_queries[1:aq_maxrow],
+                                              options = list(type = "tristate")))))
+
+AnsweredQueries$tristate_cra_to_site = c(sapply(1:aq_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = AnsweredQueries$diff_cra_to_site[1:aq_maxrow],
+                                              options = list(type = "tristate")))))
+
+AnsweredQueries$tristate_dm_to_site = c(sapply(1:aq_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = AnsweredQueries$diff_dm_to_site[1:aq_maxrow],
+                                              options = list(type = "tristate")))))
+
+AnsweredQueries$tristate_system_queries = c(sapply(1:aq_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = AnsweredQueries$diff_system_queries[1:aq_maxrow],
+                                              options = list(type = "tristate")))))
+
+AnsweredQueries %>% 
+  dplyr::select(contains("tristate")) %>% 
+  listviewer::jsonedit(listdata = ., mode = 'view')
+```
+
+### Pages Overdue
+
+We also transform the `diff` variables in `PagesOverdue`.
+
+```{r tristate-PagesOverdue}
+# create max row
+po_maxrow <- nrow(PagesOverdue)
+# tristate_total_3_days
+PagesOverdue$tristate_total_pages_overdue = c(sapply(1:po_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = PagesOverdue$diff_total_pages_overdue[1:po_maxrow],
+                                              options = list(type = "tristate")))))
+
+PagesOverdue$tristate_between_10_30_days_po = c(sapply(1:po_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = PagesOverdue$diff_between_10_30_days_po[1:po_maxrow],
+                                              options = list(type = "tristate")))))
+
+PagesOverdue$tristate_greater_than_30_days_po = c(sapply(1:po_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = PagesOverdue$diff_greater_than_30_days_po[1:po_maxrow],
+                                              options = list(type = "tristate")))))
+
+PagesOverdue$tristate_less_than_10_days_po = c(sapply(1:po_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = PagesOverdue$diff_less_than_10_days_po[1:po_maxrow],
+                                              options = list(type = "tristate")))))
+
+PagesOverdue %>% 
+  dplyr::select(contains("tristate")) %>% 
+  listviewer::jsonedit(listdata = ., mode = 'view')
+```
+
+### Monitoring Listing 
+
+Finally, we create the JSON values for the `Monitoring Listing' section. 
+
+```{r tristate-MonitoringListing}
+ml_maxrow <- nrow(MonitoringListing)
+# OpenQueries %>% dplyr::select(contains("diff"))
+# tristate_diff_unmonitored
+MonitoringListing$tristate_diff_unmonitored = c(sapply(1:ml_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = MonitoringListing$diff_unmonitored[1:ml_maxrow],
+                                              options = list(type = "tristate")))))
+# tristate_diff_monitored
+MonitoringListing$tristate_diff_monitored = c(sapply(1:op_maxrow, 
+                                function(x) jsonlite::toJSON(list(values = MonitoringListing$diff_monitored[1:op_maxrow],
+                                              options = list(type = "tristate")))))
+MonitoringListing %>% 
+  dplyr::select(contains("tristate")) %>% 
+  listviewer::jsonedit(listdata = ., mode = 'view')
+```
+
+
+## Open Queries {.tabset}
+
+Now that we have the `diff` columns in JSON format, we can plot them into the tables. 
+
+Here is the data in excel:
+
+```{r open-queries-head, echo=FALSE, out.height='60%', out.width='60%'}
+knitr::include_graphics("img/open-queries-head.png")
+```
+
+### 3-day trends
+
+And here is the same data with the `tristate` graph.
+
+> If you hover over the graph, you can see the values for each change value
+
+```{r rhandsontable-OpenQueries3Day}
+OpenQueries %>% 
+  dplyr::select(report_date,
+                total_open_queries,
+                contains("total_3")) -> OpenQueries3Day
+
+OpenQueries3Day <- magrittr::set_colnames(x = OpenQueries3Day, 
+                                          value = c("Report Date", 
+                                                    "Total Open Queries",
+                                                    "Change in 3 business days",
+                                                    "Tristate Graph"))
+# OpenQueries3Day
+rhandsontable(head(OpenQueries3Day), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+### <10 day trends
+
+These are the Open Queries with <10 day
+
+```{r rhandsontable-OpenQueries10Day}
+OpenQueries %>% 
+  dplyr::select(
+    report_date, 
+    contains("less_than_10")) -> OpenQueries10Day
+
+# OpenQueries10Day
+OpenQueries10Day <- magrittr::set_colnames(x = OpenQueries10Day, 
+                                        value = c("Report Date", 
+                                              "Total < 10 Days Outstanding",
+                                                "< 10 Days Outstanding (diff)",
+                                                  "Tristate Graph"))
+# OpenQueries3Day
+rhandsontable(head(OpenQueries10Day), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+              hot_col("Tristate Graph", 
+                      renderer = htmlwidgets::JS("renderSparkline")) %>% 
+              hot_table(highlightCol = TRUE, 
+                        highlightRow = TRUE)
+```
+
+### 10-30 day trends
+
+These are the Open Queries with '10 to 30 day' diffs
+
+```{r rhandsontable-OpenQueries10to30Day}
+OpenQueries %>% 
+  dplyr::select(
+    report_date, 
+    contains("between_10_30")) -> OpenQueries10to30Day
+
+# OpenQueries10to30Day
+OpenQueries10to30Day <- magrittr::set_colnames(x = OpenQueries10to30Day, 
+                                          value = c("Report Date", 
+                                                    "Total 10-30 Days Outstanding",
+                                                    "10-30  Days Outstanding (diff)",
+                                                    "Tristate Graph"))
+# OpenQueries3Day
+rhandsontable(head(OpenQueries10to30Day), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+
+### 30+ day trends
+
+Below is a `tristate` graph below for the '30+ day' changes.
+
+```{r rhandsontable-OpenQueries30Day}
+OpenQueries %>% 
+  dplyr::select(
+    report_date,
+    contains("greater_than")) -> OpenQueries30Day
+
+# OpenQueries30Day
+OpenQueries30Day <- magrittr::set_colnames(x = OpenQueries30Day, 
+                                      value = c("Report Date", 
+                                                "30+ Days Outstanding",
+                                                "30+  Days Outstanding (diff)",
+                                                    "Tristate Graph"))
+
+rhandsontable(head(OpenQueries30Day), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+## Answered Queries {.tabset}
+
+Here is a view of these data in Excel (we don't have the `Report Date` visible)
+
+```{r answered-queries-head, echo=FALSE, out.height='60%', out.width='60%'}
+knitr::include_graphics("img/answered-queries-head.png")
+```
+
+### Totals
+
+Below are the daily changes and diffs in the 'Totals' column.
+
+```{r rhandsontable-AnsweredQueriesTotal}
+AnsweredQueries %>% 
+  dplyr::select(report_date, 
+                contains("total_answered")) -> AnsweredQueriesTotal
+
+# AnsweredQueriesTotal
+AnsweredQueriesTotal <- magrittr::set_colnames(x = AnsweredQueriesTotal, 
+                                      value = c("Report Date", 
+                                                "Total Answered Queries",
+                                                "Total Answered Queries (diff)",
+                                                "Tristate Graph"))
+# AnsweredQueriesTotal
+rhandsontable(head(AnsweredQueriesTotal), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+### CRA to Site
+
+Below are the daily changes and diffs in the 'CRA to Site' column.
+
+```{r rhandsontable-AnsweredQueriesCRA}
+AnsweredQueries %>% 
+  dplyr::select(report_date, 
+                contains("cra_to_site")) -> AnsweredQueriesCRA
+
+# AnsweredQueriesCRA
+AnsweredQueriesCRA <- magrittr::set_colnames(x = AnsweredQueriesCRA, 
+                                      value = c("Report Date", 
+                                                "CRA to Site",
+                                                "CRA to Site (diff)",
+                                                "Tristate Graph"))
+
+# AnsweredQueriesCRA
+rhandsontable(head(AnsweredQueriesCRA), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+### DM to Site
+
+Below are the daily changes and diffs in the 'DM to Site' column.
+
+```{r rhandsontable-AnsweredQueriesDM}
+AnsweredQueries %>% 
+  dplyr::select(
+    report_date, 
+    contains("dm_to_site")) -> AnsweredQueriesDM
+# AnsweredQueriesDM
+
+# AnsweredQueriesDM
+AnsweredQueriesDM <- magrittr::set_colnames(x = AnsweredQueriesDM, 
+                                      value = c("Report Date", 
+                                                "DM to Site",
+                                                "DM to Site (diff)",
+                                                "Tristate Graph"))
+# AnsweredQueriesDM
+rhandsontable(head(AnsweredQueriesDM), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+### System Queries
+
+Below are the daily changes and diffs in the 'System Queries' column.
+
+```{r rhandsontable-AnsweredQueriesSystemQueries}
+AnsweredQueries %>% 
+  dplyr::select(
+    report_date, 
+    contains("system_queries")) -> AnsweredQueriesSystemQueries
+# AnsweredQueriesSystemQueries
+
+# AnsweredQueriesSystemQueries
+AnsweredQueriesSystemQueries <- magrittr::set_colnames(x = AnsweredQueriesSystemQueries, 
+                                      value = c("Report Date", 
+                                                "System Queries",
+                                                "System Queries (diff)",
+                                                "Tristate Graph"))
+# AnsweredQueriesSystemQueries
+rhandsontable(head(AnsweredQueriesSystemQueries), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+
+## Pages Overdue {.tabset}
+
+Here is a view of these data in Excel (we don't have the `Report Date` visible)
+
+```{r pages-overdue-head, echo=FALSE, out.height='60%', out.width='60%'}
+knitr::include_graphics("img/pages-overdue-head.png")
+```
+
+### Total Pages Overdue
+
+These are the metrics from the 'Total' column under 'Pages Overdue'
+
+```{r rhandsontable-PagesOverdueTotal}
+PagesOverdue %>% 
+  dplyr::select(
+    report_date,
+    contains("total_pages")) -> PagesOverdueTotal
+
+PagesOverdueTotal <- magrittr::set_colnames(x = PagesOverdueTotal, 
+                                            value = c("Report Date",
+                                                      "Total Pages Overdue",
+                                                      "Total Pages Overdue (Diff",
+                                                      "Tristate Graph"))
+# PagesOverdueTotal
+rhandsontable(head(PagesOverdueTotal), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+
+### <10 days (Pages Overdue)
+
+These are the metrics from the '<10 days' column under 'Pages Overdue'. Here we can see the `0` on `2020-11-02` is calculated correctly. 
+
+```{r rhandsontable-PagesOverdue10days}
+PagesOverdue %>% 
+  dplyr::select(report_date, 
+                contains("less_than")) -> PagesOverdue10days
+
+PagesOverdue10days <- magrittr::set_colnames(x = PagesOverdue10days, 
+                                            value = c("Report Date",
+                                                      "<10 Days Pages Overdue",
+                                                      "<10 Days Pages Overdue (Diff",
+                                                      "Tristate Graph"))
+
+rhandsontable(head(PagesOverdue10days), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+
+### 10-30 days (Pages Overdue)
+
+These are the metrics from the '10-30 days' column under 'Pages Overdue'. 
+
+```{r rhandsontable-PagesOverdue10to30Days}
+PagesOverdue %>% 
+  dplyr::select(report_date, 
+                contains("between")) -> PagesOverdue10to30Days
+
+PagesOverdue10to30Days <- magrittr::set_colnames(x = PagesOverdue10to30Days, 
+                                            value = c("Report Date",
+                                                      "Between 10 - 30 Days Pages Overdue",
+                                                      "Between 10 - 30 Pages Overdue (Diff",
+                                                      "Tristate Graph"))
+
+rhandsontable(head(PagesOverdue10to30Days), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+
+### 30+ days (Pages Overdue)
+
+These are the metrics from the '30+ days' column under 'Pages Overdue'.
+
+```{r rhandsontable-PagesOverdue30PlusDays}
+PagesOverdue %>% 
+  dplyr::select(report_date, 
+                contains("greater_than")) -> PagesOverdue30PlusDays
+
+PagesOverdue30PlusDays <- magrittr::set_colnames(x = PagesOverdue30PlusDays, 
+                                            value = c("Report Date",
+                                                      ">30 Days Pages Overdue",
+                                                      ">30 Days Pages Overdue (Diff",
+                                                      "Tristate Graph"))
+
+rhandsontable(head(PagesOverdue30PlusDays), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+
+## Monitoring Listing {.tabset}
+
+This section only has two `diff` columns: Unmonitored and Monitored
+
+```{r monitoring-listing-head, echo=FALSE, out.height='60%', out.width='60%'}
+knitr::include_graphics("img/monitoring-listing-head.png")
+```
+
+### Unmonitored 
+
+```{r rhandsontable-MonitoringListingUnmonitored}
+MonitoringListing %>% 
+  dplyr::select(
+    report_date, 
+    contains("unmonitored")) -> MonitoringListingUnmonitored
+
+MonitoringListingUnmonitored <- magrittr::set_colnames(x = MonitoringListingUnmonitored, 
+                                                       value = c("Report Date", 
+                                                              "Unmonitored",
+                                                           "Unmonitored (Diff)",
+                                                               "Tristate Graph"))
+
+rhandsontable(head(MonitoringListingUnmonitored), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+
+
+
+### Monitored 
+
+```{r rhandsontable-MonitoringListingMonitored}
+MonitoringListing %>% 
+  dplyr::select(
+    report_date,
+    monitored,
+    diff_monitored,
+    tristate_diff_monitored) -> MonitoringListingMonitored
+
+MonitoringListingMonitored <- magrittr::set_colnames(x = MonitoringListingMonitored, 
+                                                       value = c("Report Date", 
+                                                              "Monitored",
+                                                           "Monitored (Diff)",
+                                                               "Tristate Graph"))
+
+rhandsontable(head(MonitoringListingMonitored), 
+              readOnly = TRUE,
+              rowHeaders = NULL, 
+              width = 820, 
+              height = 400) %>%
+    hot_col("Tristate Graph",
+            renderer = htmlwidgets::JS("renderSparkline")) %>% 
+    hot_table(highlightCol = TRUE, highlightRow = TRUE)
+```
+

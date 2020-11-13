@@ -1,0 +1,35 @@
+---
+title: "Data Manipulation with R"
+subtitle: "BioMarin Meetup: transforming, reformatting, and calculating variables"
+author: 
+  - "Martin Frigaard"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(reprex)
+library(xaringan)
+library(pagedown)
+library(xaringanthemer)
+# folders
+folders <- c("code", "data", "img", "docs", "pdfs")
+purrr::map(.x = folders, .f = fs::dir_create)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", 
+                      dpi = 320, fig.height = 4, fig.path = "img/")
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+xaringanthemer::style_duo_accent(primary_color = "#035AA6", secondary_color = "#03A696")
+# xaringan::inf_mr() # for instant knitting and reviewing
+```
+
+class: inverse, center, bottom
+background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-position: 50% 10%
+background-size: 35%
+
+# dplyr = a tidyverse package for data manipulation

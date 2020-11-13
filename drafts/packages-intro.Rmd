@@ -1,0 +1,60 @@
+---
+title: "Introduction to R packages"
+subtitle: "BioMarin CSM: package, distribute, and  re-use R code"
+author: 
+  - "Martin Frigaard, Cinical Programmer"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", dpi = 320, fig.height = 4)
+library(tidyverse)
+library(reprex)
+library(xaringan)
+library(pagedown)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+xaringanthemer::style_duo_accent(primary_color = "#035AA6", secondary_color = "#03A696")
+# xaringan::inf_mr() # for instant knitting and reviewing
+```
+
+background-image: url(img/pkgs.png)
+background-position: 50% 30%
+background-size: 30%
+class: center, middle
+
+```{r inf_mr, eval=FALSE, include=FALSE}
+xaringan::inf_mr()
+```
+
+
+<br><br><br><br><br><br><br><br><br><br><br>
+
+## Store and organize your code, data, and reports into an R package
+
+---
+background-image: url(img/pkgs.png)
+background-position: 90% 9%
+background-size: 14%
+class: inverse, center, top
+
+# R packages 
+
+## Location, location, location 
+
+### *all functions, data, documentation, metadata, etc., in a predetermined, standardized location*
+
+## Reduce, re-use, recycle, 
+
+### *turn *
+

@@ -1,0 +1,36 @@
+---
+title: "Displaying data in tables with R Markdown"
+subtitle: "BioMarin CSM: interactive html tables"  
+author: 
+  - "Martin Frigaard, Cinical Programmer"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(reprex)
+library(xaringan)
+library(pagedown)
+library(xaringanthemer)
+# folders
+folders <- c("code", "data", "img", "docs", "pdfs")
+purrr::map(.x = folders, .f = fs::dir_create)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", dpi = 320, fig.height = 4)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+xaringanthemer::style_duo_accent(primary_color = "#035AA6", secondary_color = "#03A696")
+# xaringan::inf_mr() # for instant knitting and reviewing
+```
+
+background-image: url(img/GitHub-Mark-120px-plus.png)
+background-position: 50% 30%
+background-size: 20%
+class: center, top
+
+```{r inf_mr, eval=FALSE, include=FALSE}
+xaringan::inf_mr()
+```

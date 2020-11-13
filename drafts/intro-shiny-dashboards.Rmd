@@ -1,0 +1,37 @@
+---
+title: "Intro to shiny dashboards"
+subtitle: "BioMarin Meetup: flexdashboard with R markdown"
+author: 
+  - "Martin Frigaard"
+date: '`r Sys.Date()`'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(reprex)
+library(xaringan)
+library(pagedown)
+fs::dir_create("img")
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", 
+                      dpi = 320, fig.height = 4, fig.path = "img/")
+
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+xaringanthemer::style_mono_light(base_color = "cornflowerblue")
+# xaringan::inf_mr() # for instant knitting and reviewing
+```
+
+class: inverse, center, bottom
+background-image: url(http://hexb.in/hexagons/shiny.png)
+background-position: 50% 10%
+background-size: 35%
