@@ -4,8 +4,10 @@
     <title>Data Manipulation with R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Martin Frigaard" />
-    <meta name="date" content="2020-11-13" />
+    <meta name="date" content="2020-11-14" />
     <script src="04-data-manipulation-with-dplyr_files/header-attrs/header-attrs.js"></script>
+    <link href="04-data-manipulation-with-dplyr_files/pagedtable/css/pagedtable.css" rel="stylesheet" />
+    <script src="04-data-manipulation-with-dplyr_files/pagedtable/js/pagedtable.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -15,12 +17,13 @@ class: center, middle, inverse, title-slide
 # Data Manipulation with R
 ## BioMarin Meetup: transforming, reformatting, and calculating variables
 ### Martin Frigaard
-### 2020-11-13
+### 2020-11-14
 
 ---
 
 
 
+class: middle, center
 
 
 
@@ -31,53 +34,53 @@ background-image: url(img/dplyr.png)
 background-position: 50% 10%
 background-size: 35%
 
-# dplyr = a tidyverse package for data manipulation
+# `dplyr` = a grammar for data manipulation
 
 ---
 class: left, top
 background-image: url(img/dplyr.png)
-background-position: 90% 10%
-background-size: 12%
+background-position: 95% 10%
+background-size: 9%
 
-# `dplyr` = "D + ply + ARRR"
+# What are common data manipulation tasks?
+
+### 1). Choose columns from a dataset 
+
+### 2). Choose rows from a dataset  
+
+### 3). Order rows (either alphabetically or numerically)
+
+### 4). Reformat/change values  
+
+### 5). Create or calculate new columns 
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 10%
+background-size: 9%
+
+# `dplyr` = "dee + ply + ARRRR"
 
 &lt;br&gt;
 
 .pull-left[
 
-### Pliers are a tools for gripping &amp; manipulation common objects 
+### *Pliers* are tools for grasping or manipulating common objects 
 
 ### The `dplyr` package has a variety of verbs for performing common data manipulations
 
 ]
 
-&lt;br&gt;&lt;br&gt;
+--
+
+&lt;br&gt;
 
 .pull-right[
 
-&lt;img src="img/pliers.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
-
+&lt;img src="img/pliers.png" width="80%" height="80%" style="display: block; margin: auto;" /&gt;
 
 ]
-
----
-class: left, top
-background-image: url(img/dplyr.png)
-background-position: 90% 10%
-background-size: 9%
-
-# `dplyr` verbs
-
-## There are four primary verbs for data manipulation in `dplyr`
-
-### `select()` 
-
-### `filter()`  
-
-### `arrange()` 
-
-### `mutate()`
-
 
 ---
 class: left, top
@@ -110,6 +113,58 @@ library(dplyr)
 starwars &lt;- dplyr::starwars
 ```
 
+--
+
+### We'll use a smaller version of `starwars` to show `dplyr`'s common data manipluation verbs
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 5% 95%
+background-size: 7%
+
+# Importing `orginal_starwars` 
+
+You can access the .csv file using the link below: 
+
+
+```r
+library(readr)
+orginal_starwars &lt;- read_csv("data/orginal-starwars.csv")
+orginal_starwars
+```
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["gender"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"masculine","5":"Human","6":"Tatooine"},{"1":"C-3PO","2":"167","3":"75","4":"masculine","5":"Droid","6":"Tatooine"},{"1":"R2-D2","2":"96","3":"32","4":"masculine","5":"Droid","6":"Naboo"},{"1":"Leia Organa","2":"150","3":"49","4":"feminine","5":"Human","6":"Alderaan"},{"1":"Chewbacca","2":"228","3":"112","4":"masculine","5":"Wookiee","6":"Kashyyyk"},{"1":"Han Solo","2":"180","3":"80","4":"masculine","5":"Human","6":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 5% 95%
+background-size: 7%
+
+## After running the `read_csv()` function, we have the dataset in our ***Environment*** pane
+
+&lt;img src="img/starwars-env.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 9%
+background-size: 9%
+
+# View the `starwars` dataset
+
+#### You can view the `starwars` dataset using RStudio's data editor
+
+&lt;img src="img/starwars-dataviewer.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+
+
 ---
 class: left, top
 background-image: url(img/dplyr.png)
@@ -120,31 +175,119 @@ background-size: 9%
 
 #### Take a look at the dataset using `dplyr::glimpse()`
 
+--
+
 
 ```r
 glimpse(starwars)
 ```
 
 ```
-#&gt;  Rows: 87
-#&gt;  Columns: 14
-#&gt;  $ name       &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "D…
-#&gt;  $ height     &lt;int&gt; 172, 167, 96, 202, 150, 178, 165, 97, …
-#&gt;  $ mass       &lt;dbl&gt; 77, 75, 32, 136, 49, 120, 75, 32, 84, …
-#&gt;  $ hair_color &lt;chr&gt; "blond", NA, NA, "none", "brown", "bro…
-#&gt;  $ skin_color &lt;chr&gt; "fair", "gold", "white, blue", "white"…
-#&gt;  $ eye_color  &lt;chr&gt; "blue", "yellow", "red", "yellow", "br…
-#&gt;  $ birth_year &lt;dbl&gt; 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 4…
-#&gt;  $ sex        &lt;chr&gt; "male", "none", "none", "male", "femal…
-#&gt;  $ gender     &lt;chr&gt; "masculine", "masculine", "masculine",…
-#&gt;  $ homeworld  &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Tato…
-#&gt;  $ species    &lt;chr&gt; "Human", "Droid", "Droid", "Human", "H…
-#&gt;  $ films      &lt;list&gt; [&lt;"The Empire Strikes Back", "Revenge…
-#&gt;  $ vehicles   &lt;list&gt; [&lt;"Snowspeeder", "Imperial Speeder Bi…
-#&gt;  $ starships  &lt;list&gt; [&lt;"X-wing", "Imperial shuttle"&gt;, &lt;&gt;, …
+## Rows: 87
+## Columns: 14
+## $ name       &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "D…
+## $ height     &lt;int&gt; 172, 167, 96, 202, 150, 178, 165, 97, …
+## $ mass       &lt;dbl&gt; 77, 75, 32, 136, 49, 120, 75, 32, 84, …
+## $ hair_color &lt;chr&gt; "blond", NA, NA, "none", "brown", "bro…
+## $ skin_color &lt;chr&gt; "fair", "gold", "white, blue", "white"…
+## $ eye_color  &lt;chr&gt; "blue", "yellow", "red", "yellow", "br…
+## $ birth_year &lt;dbl&gt; 19.0, 112.0, 33.0, 41.9, 19.0, 52.0, 4…
+## $ sex        &lt;chr&gt; "male", "none", "none", "male", "femal…
+## $ gender     &lt;chr&gt; "masculine", "masculine", "masculine",…
+## $ homeworld  &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Tato…
+## $ species    &lt;chr&gt; "Human", "Droid", "Droid", "Human", "H…
+## $ films      &lt;list&gt; [&lt;"The Empire Strikes Back", "Revenge…
+## $ vehicles   &lt;list&gt; [&lt;"Snowspeeder", "Imperial Speeder Bi…
+## $ starships  &lt;list&gt; [&lt;"X-wing", "Imperial shuttle"&gt;, &lt;&gt;, …
 ```
 
 
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 9%
+
+# `dplyr` verbs
+
+## There are four primary verbs for data manipulation in `dplyr`
+
+### `select()` 
+
+### `filter()`  
+
+### `arrange()` 
+
+### `mutate()`
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 15%
+background-size: 9%
+
+## Select columns with `select()`
+
+#### `select()` allows us to pick specific columns out of a dataset
+
+
+```r
+starwars %&gt;% 
+  select(name, homeworld, species)
+```
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[2],"type":["chr"],"align":["left"]},{"label":["species"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"Tatooine","3":"Human"},{"1":"C-3PO","2":"Tatooine","3":"Droid"},{"1":"R2-D2","2":"Naboo","3":"Droid"},{"1":"Darth Vader","2":"Tatooine","3":"Human"},{"1":"Leia Organa","2":"Alderaan","3":"Human"},{"1":"Owen Lars","2":"Tatooine","3":"Human"},{"1":"Beru Whitesun lars","2":"Tatooine","3":"Human"},{"1":"R5-D4","2":"Tatooine","3":"Droid"},{"1":"Biggs Darklighter","2":"Tatooine","3":"Human"},{"1":"Obi-Wan Kenobi","2":"Stewjon","3":"Human"},{"1":"Anakin Skywalker","2":"Tatooine","3":"Human"},{"1":"Wilhuff Tarkin","2":"Eriadu","3":"Human"},{"1":"Chewbacca","2":"Kashyyyk","3":"Wookiee"},{"1":"Han Solo","2":"Corellia","3":"Human"},{"1":"Greedo","2":"Rodia","3":"Rodian"},{"1":"Jabba Desilijic Tiure","2":"Nal Hutta","3":"Hutt"},{"1":"Wedge Antilles","2":"Corellia","3":"Human"},{"1":"Jek Tono Porkins","2":"Bestine IV","3":"Human"},{"1":"Yoda","2":"NA","3":"Yoda's species"},{"1":"Palpatine","2":"Naboo","3":"Human"},{"1":"Boba Fett","2":"Kamino","3":"Human"},{"1":"IG-88","2":"NA","3":"Droid"},{"1":"Bossk","2":"Trandosha","3":"Trandoshan"},{"1":"Lando Calrissian","2":"Socorro","3":"Human"},{"1":"Lobot","2":"Bespin","3":"Human"},{"1":"Ackbar","2":"Mon Cala","3":"Mon Calamari"},{"1":"Mon Mothma","2":"Chandrila","3":"Human"},{"1":"Arvel Crynyd","2":"NA","3":"Human"},{"1":"Wicket Systri Warrick","2":"Endor","3":"Ewok"},{"1":"Nien Nunb","2":"Sullust","3":"Sullustan"},{"1":"Qui-Gon Jinn","2":"NA","3":"Human"},{"1":"Nute Gunray","2":"Cato Neimoidia","3":"Neimodian"},{"1":"Finis Valorum","2":"Coruscant","3":"Human"},{"1":"Jar Jar Binks","2":"Naboo","3":"Gungan"},{"1":"Roos Tarpals","2":"Naboo","3":"Gungan"},{"1":"Rugor Nass","2":"Naboo","3":"Gungan"},{"1":"Ric Olié","2":"Naboo","3":"NA"},{"1":"Watto","2":"Toydaria","3":"Toydarian"},{"1":"Sebulba","2":"Malastare","3":"Dug"},{"1":"Quarsh Panaka","2":"Naboo","3":"NA"},{"1":"Shmi Skywalker","2":"Tatooine","3":"Human"},{"1":"Darth Maul","2":"Dathomir","3":"Zabrak"},{"1":"Bib Fortuna","2":"Ryloth","3":"Twi'lek"},{"1":"Ayla Secura","2":"Ryloth","3":"Twi'lek"},{"1":"Dud Bolt","2":"Vulpter","3":"Vulptereen"},{"1":"Gasgano","2":"Troiken","3":"Xexto"},{"1":"Ben Quadinaros","2":"Tund","3":"Toong"},{"1":"Mace Windu","2":"Haruun Kal","3":"Human"},{"1":"Ki-Adi-Mundi","2":"Cerea","3":"Cerean"},{"1":"Kit Fisto","2":"Glee Anselm","3":"Nautolan"},{"1":"Eeth Koth","2":"Iridonia","3":"Zabrak"},{"1":"Adi Gallia","2":"Coruscant","3":"Tholothian"},{"1":"Saesee Tiin","2":"Iktotch","3":"Iktotchi"},{"1":"Yarael Poof","2":"Quermia","3":"Quermian"},{"1":"Plo Koon","2":"Dorin","3":"Kel Dor"},{"1":"Mas Amedda","2":"Champala","3":"Chagrian"},{"1":"Gregar Typho","2":"Naboo","3":"Human"},{"1":"Cordé","2":"Naboo","3":"Human"},{"1":"Cliegg Lars","2":"Tatooine","3":"Human"},{"1":"Poggle the Lesser","2":"Geonosis","3":"Geonosian"},{"1":"Luminara Unduli","2":"Mirial","3":"Mirialan"},{"1":"Barriss Offee","2":"Mirial","3":"Mirialan"},{"1":"Dormé","2":"Naboo","3":"Human"},{"1":"Dooku","2":"Serenno","3":"Human"},{"1":"Bail Prestor Organa","2":"Alderaan","3":"Human"},{"1":"Jango Fett","2":"Concord Dawn","3":"Human"},{"1":"Zam Wesell","2":"Zolan","3":"Clawdite"},{"1":"Dexter Jettster","2":"Ojom","3":"Besalisk"},{"1":"Lama Su","2":"Kamino","3":"Kaminoan"},{"1":"Taun We","2":"Kamino","3":"Kaminoan"},{"1":"Jocasta Nu","2":"Coruscant","3":"Human"},{"1":"Ratts Tyerell","2":"Aleen Minor","3":"Aleena"},{"1":"R4-P17","2":"NA","3":"Droid"},{"1":"Wat Tambor","2":"Skako","3":"Skakoan"},{"1":"San Hill","2":"Muunilinst","3":"Muun"},{"1":"Shaak Ti","2":"Shili","3":"Togruta"},{"1":"Grievous","2":"Kalee","3":"Kaleesh"},{"1":"Tarfful","2":"Kashyyyk","3":"Wookiee"},{"1":"Raymus Antilles","2":"Alderaan","3":"Human"},{"1":"Sly Moore","2":"Umbara","3":"NA"},{"1":"Tion Medon","2":"Utapau","3":"Pau'an"},{"1":"Finn","2":"NA","3":"Human"},{"1":"Rey","2":"NA","3":"Human"},{"1":"Poe Dameron","2":"NA","3":"Human"},{"1":"BB8","2":"NA","3":"Droid"},{"1":"Captain Phasma","2":"NA","3":"NA"},{"1":"Padmé Amidala","2":"Naboo","3":"Human"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 15%
+background-size: 9%
+
+## Select columns with `select()`
+
+#### We can use negation to remove columns
+
+
+```r
+starwars %&gt;% 
+  select(-c(films, vehicles, starships))
+```
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["int"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["skin_color"],"name":[5],"type":["chr"],"align":["left"]},{"label":["eye_color"],"name":[6],"type":["chr"],"align":["left"]},{"label":["birth_year"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[8],"type":["chr"],"align":["left"]},{"label":["gender"],"name":[9],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[10],"type":["chr"],"align":["left"]},{"label":["species"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77.0","4":"blond","5":"fair","6":"blue","7":"19.0","8":"male","9":"masculine","10":"Tatooine","11":"Human"},{"1":"C-3PO","2":"167","3":"75.0","4":"NA","5":"gold","6":"yellow","7":"112.0","8":"none","9":"masculine","10":"Tatooine","11":"Droid"},{"1":"R2-D2","2":"96","3":"32.0","4":"NA","5":"white, blue","6":"red","7":"33.0","8":"none","9":"masculine","10":"Naboo","11":"Droid"},{"1":"Darth Vader","2":"202","3":"136.0","4":"none","5":"white","6":"yellow","7":"41.9","8":"male","9":"masculine","10":"Tatooine","11":"Human"},{"1":"Leia Organa","2":"150","3":"49.0","4":"brown","5":"light","6":"brown","7":"19.0","8":"female","9":"feminine","10":"Alderaan","11":"Human"},{"1":"Owen Lars","2":"178","3":"120.0","4":"brown, grey","5":"light","6":"blue","7":"52.0","8":"male","9":"masculine","10":"Tatooine","11":"Human"},{"1":"Beru Whitesun lars","2":"165","3":"75.0","4":"brown","5":"light","6":"blue","7":"47.0","8":"female","9":"feminine","10":"Tatooine","11":"Human"},{"1":"R5-D4","2":"97","3":"32.0","4":"NA","5":"white, red","6":"red","7":"NA","8":"none","9":"masculine","10":"Tatooine","11":"Droid"},{"1":"Biggs Darklighter","2":"183","3":"84.0","4":"black","5":"light","6":"brown","7":"24.0","8":"male","9":"masculine","10":"Tatooine","11":"Human"},{"1":"Obi-Wan Kenobi","2":"182","3":"77.0","4":"auburn, white","5":"fair","6":"blue-gray","7":"57.0","8":"male","9":"masculine","10":"Stewjon","11":"Human"},{"1":"Anakin Skywalker","2":"188","3":"84.0","4":"blond","5":"fair","6":"blue","7":"41.9","8":"male","9":"masculine","10":"Tatooine","11":"Human"},{"1":"Wilhuff Tarkin","2":"180","3":"NA","4":"auburn, grey","5":"fair","6":"blue","7":"64.0","8":"male","9":"masculine","10":"Eriadu","11":"Human"},{"1":"Chewbacca","2":"228","3":"112.0","4":"brown","5":"unknown","6":"blue","7":"200.0","8":"male","9":"masculine","10":"Kashyyyk","11":"Wookiee"},{"1":"Han Solo","2":"180","3":"80.0","4":"brown","5":"fair","6":"brown","7":"29.0","8":"male","9":"masculine","10":"Corellia","11":"Human"},{"1":"Greedo","2":"173","3":"74.0","4":"NA","5":"green","6":"black","7":"44.0","8":"male","9":"masculine","10":"Rodia","11":"Rodian"},{"1":"Jabba Desilijic Tiure","2":"175","3":"1358.0","4":"NA","5":"green-tan, brown","6":"orange","7":"600.0","8":"hermaphroditic","9":"masculine","10":"Nal Hutta","11":"Hutt"},{"1":"Wedge Antilles","2":"170","3":"77.0","4":"brown","5":"fair","6":"hazel","7":"21.0","8":"male","9":"masculine","10":"Corellia","11":"Human"},{"1":"Jek Tono Porkins","2":"180","3":"110.0","4":"brown","5":"fair","6":"blue","7":"NA","8":"male","9":"masculine","10":"Bestine IV","11":"Human"},{"1":"Yoda","2":"66","3":"17.0","4":"white","5":"green","6":"brown","7":"896.0","8":"male","9":"masculine","10":"NA","11":"Yoda's species"},{"1":"Palpatine","2":"170","3":"75.0","4":"grey","5":"pale","6":"yellow","7":"82.0","8":"male","9":"masculine","10":"Naboo","11":"Human"},{"1":"Boba Fett","2":"183","3":"78.2","4":"black","5":"fair","6":"brown","7":"31.5","8":"male","9":"masculine","10":"Kamino","11":"Human"},{"1":"IG-88","2":"200","3":"140.0","4":"none","5":"metal","6":"red","7":"15.0","8":"none","9":"masculine","10":"NA","11":"Droid"},{"1":"Bossk","2":"190","3":"113.0","4":"none","5":"green","6":"red","7":"53.0","8":"male","9":"masculine","10":"Trandosha","11":"Trandoshan"},{"1":"Lando Calrissian","2":"177","3":"79.0","4":"black","5":"dark","6":"brown","7":"31.0","8":"male","9":"masculine","10":"Socorro","11":"Human"},{"1":"Lobot","2":"175","3":"79.0","4":"none","5":"light","6":"blue","7":"37.0","8":"male","9":"masculine","10":"Bespin","11":"Human"},{"1":"Ackbar","2":"180","3":"83.0","4":"none","5":"brown mottle","6":"orange","7":"41.0","8":"male","9":"masculine","10":"Mon Cala","11":"Mon Calamari"},{"1":"Mon Mothma","2":"150","3":"NA","4":"auburn","5":"fair","6":"blue","7":"48.0","8":"female","9":"feminine","10":"Chandrila","11":"Human"},{"1":"Arvel Crynyd","2":"NA","3":"NA","4":"brown","5":"fair","6":"brown","7":"NA","8":"male","9":"masculine","10":"NA","11":"Human"},{"1":"Wicket Systri Warrick","2":"88","3":"20.0","4":"brown","5":"brown","6":"brown","7":"8.0","8":"male","9":"masculine","10":"Endor","11":"Ewok"},{"1":"Nien Nunb","2":"160","3":"68.0","4":"none","5":"grey","6":"black","7":"NA","8":"male","9":"masculine","10":"Sullust","11":"Sullustan"},{"1":"Qui-Gon Jinn","2":"193","3":"89.0","4":"brown","5":"fair","6":"blue","7":"92.0","8":"male","9":"masculine","10":"NA","11":"Human"},{"1":"Nute Gunray","2":"191","3":"90.0","4":"none","5":"mottled green","6":"red","7":"NA","8":"male","9":"masculine","10":"Cato Neimoidia","11":"Neimodian"},{"1":"Finis Valorum","2":"170","3":"NA","4":"blond","5":"fair","6":"blue","7":"91.0","8":"male","9":"masculine","10":"Coruscant","11":"Human"},{"1":"Jar Jar Binks","2":"196","3":"66.0","4":"none","5":"orange","6":"orange","7":"52.0","8":"male","9":"masculine","10":"Naboo","11":"Gungan"},{"1":"Roos Tarpals","2":"224","3":"82.0","4":"none","5":"grey","6":"orange","7":"NA","8":"male","9":"masculine","10":"Naboo","11":"Gungan"},{"1":"Rugor Nass","2":"206","3":"NA","4":"none","5":"green","6":"orange","7":"NA","8":"male","9":"masculine","10":"Naboo","11":"Gungan"},{"1":"Ric Olié","2":"183","3":"NA","4":"brown","5":"fair","6":"blue","7":"NA","8":"NA","9":"NA","10":"Naboo","11":"NA"},{"1":"Watto","2":"137","3":"NA","4":"black","5":"blue, grey","6":"yellow","7":"NA","8":"male","9":"masculine","10":"Toydaria","11":"Toydarian"},{"1":"Sebulba","2":"112","3":"40.0","4":"none","5":"grey, red","6":"orange","7":"NA","8":"male","9":"masculine","10":"Malastare","11":"Dug"},{"1":"Quarsh Panaka","2":"183","3":"NA","4":"black","5":"dark","6":"brown","7":"62.0","8":"NA","9":"NA","10":"Naboo","11":"NA"},{"1":"Shmi Skywalker","2":"163","3":"NA","4":"black","5":"fair","6":"brown","7":"72.0","8":"female","9":"feminine","10":"Tatooine","11":"Human"},{"1":"Darth Maul","2":"175","3":"80.0","4":"none","5":"red","6":"yellow","7":"54.0","8":"male","9":"masculine","10":"Dathomir","11":"Zabrak"},{"1":"Bib Fortuna","2":"180","3":"NA","4":"none","5":"pale","6":"pink","7":"NA","8":"male","9":"masculine","10":"Ryloth","11":"Twi'lek"},{"1":"Ayla Secura","2":"178","3":"55.0","4":"none","5":"blue","6":"hazel","7":"48.0","8":"female","9":"feminine","10":"Ryloth","11":"Twi'lek"},{"1":"Dud Bolt","2":"94","3":"45.0","4":"none","5":"blue, grey","6":"yellow","7":"NA","8":"male","9":"masculine","10":"Vulpter","11":"Vulptereen"},{"1":"Gasgano","2":"122","3":"NA","4":"none","5":"white, blue","6":"black","7":"NA","8":"male","9":"masculine","10":"Troiken","11":"Xexto"},{"1":"Ben Quadinaros","2":"163","3":"65.0","4":"none","5":"grey, green, yellow","6":"orange","7":"NA","8":"male","9":"masculine","10":"Tund","11":"Toong"},{"1":"Mace Windu","2":"188","3":"84.0","4":"none","5":"dark","6":"brown","7":"72.0","8":"male","9":"masculine","10":"Haruun Kal","11":"Human"},{"1":"Ki-Adi-Mundi","2":"198","3":"82.0","4":"white","5":"pale","6":"yellow","7":"92.0","8":"male","9":"masculine","10":"Cerea","11":"Cerean"},{"1":"Kit Fisto","2":"196","3":"87.0","4":"none","5":"green","6":"black","7":"NA","8":"male","9":"masculine","10":"Glee Anselm","11":"Nautolan"},{"1":"Eeth Koth","2":"171","3":"NA","4":"black","5":"brown","6":"brown","7":"NA","8":"male","9":"masculine","10":"Iridonia","11":"Zabrak"},{"1":"Adi Gallia","2":"184","3":"50.0","4":"none","5":"dark","6":"blue","7":"NA","8":"female","9":"feminine","10":"Coruscant","11":"Tholothian"},{"1":"Saesee Tiin","2":"188","3":"NA","4":"none","5":"pale","6":"orange","7":"NA","8":"male","9":"masculine","10":"Iktotch","11":"Iktotchi"},{"1":"Yarael Poof","2":"264","3":"NA","4":"none","5":"white","6":"yellow","7":"NA","8":"male","9":"masculine","10":"Quermia","11":"Quermian"},{"1":"Plo Koon","2":"188","3":"80.0","4":"none","5":"orange","6":"black","7":"22.0","8":"male","9":"masculine","10":"Dorin","11":"Kel Dor"},{"1":"Mas Amedda","2":"196","3":"NA","4":"none","5":"blue","6":"blue","7":"NA","8":"male","9":"masculine","10":"Champala","11":"Chagrian"},{"1":"Gregar Typho","2":"185","3":"85.0","4":"black","5":"dark","6":"brown","7":"NA","8":"male","9":"masculine","10":"Naboo","11":"Human"},{"1":"Cordé","2":"157","3":"NA","4":"brown","5":"light","6":"brown","7":"NA","8":"female","9":"feminine","10":"Naboo","11":"Human"},{"1":"Cliegg Lars","2":"183","3":"NA","4":"brown","5":"fair","6":"blue","7":"82.0","8":"male","9":"masculine","10":"Tatooine","11":"Human"},{"1":"Poggle the Lesser","2":"183","3":"80.0","4":"none","5":"green","6":"yellow","7":"NA","8":"male","9":"masculine","10":"Geonosis","11":"Geonosian"},{"1":"Luminara Unduli","2":"170","3":"56.2","4":"black","5":"yellow","6":"blue","7":"58.0","8":"female","9":"feminine","10":"Mirial","11":"Mirialan"},{"1":"Barriss Offee","2":"166","3":"50.0","4":"black","5":"yellow","6":"blue","7":"40.0","8":"female","9":"feminine","10":"Mirial","11":"Mirialan"},{"1":"Dormé","2":"165","3":"NA","4":"brown","5":"light","6":"brown","7":"NA","8":"female","9":"feminine","10":"Naboo","11":"Human"},{"1":"Dooku","2":"193","3":"80.0","4":"white","5":"fair","6":"brown","7":"102.0","8":"male","9":"masculine","10":"Serenno","11":"Human"},{"1":"Bail Prestor Organa","2":"191","3":"NA","4":"black","5":"tan","6":"brown","7":"67.0","8":"male","9":"masculine","10":"Alderaan","11":"Human"},{"1":"Jango Fett","2":"183","3":"79.0","4":"black","5":"tan","6":"brown","7":"66.0","8":"male","9":"masculine","10":"Concord Dawn","11":"Human"},{"1":"Zam Wesell","2":"168","3":"55.0","4":"blonde","5":"fair, green, yellow","6":"yellow","7":"NA","8":"female","9":"feminine","10":"Zolan","11":"Clawdite"},{"1":"Dexter Jettster","2":"198","3":"102.0","4":"none","5":"brown","6":"yellow","7":"NA","8":"male","9":"masculine","10":"Ojom","11":"Besalisk"},{"1":"Lama Su","2":"229","3":"88.0","4":"none","5":"grey","6":"black","7":"NA","8":"male","9":"masculine","10":"Kamino","11":"Kaminoan"},{"1":"Taun We","2":"213","3":"NA","4":"none","5":"grey","6":"black","7":"NA","8":"female","9":"feminine","10":"Kamino","11":"Kaminoan"},{"1":"Jocasta Nu","2":"167","3":"NA","4":"white","5":"fair","6":"blue","7":"NA","8":"female","9":"feminine","10":"Coruscant","11":"Human"},{"1":"Ratts Tyerell","2":"79","3":"15.0","4":"none","5":"grey, blue","6":"unknown","7":"NA","8":"male","9":"masculine","10":"Aleen Minor","11":"Aleena"},{"1":"R4-P17","2":"96","3":"NA","4":"none","5":"silver, red","6":"red, blue","7":"NA","8":"none","9":"feminine","10":"NA","11":"Droid"},{"1":"Wat Tambor","2":"193","3":"48.0","4":"none","5":"green, grey","6":"unknown","7":"NA","8":"male","9":"masculine","10":"Skako","11":"Skakoan"},{"1":"San Hill","2":"191","3":"NA","4":"none","5":"grey","6":"gold","7":"NA","8":"male","9":"masculine","10":"Muunilinst","11":"Muun"},{"1":"Shaak Ti","2":"178","3":"57.0","4":"none","5":"red, blue, white","6":"black","7":"NA","8":"female","9":"feminine","10":"Shili","11":"Togruta"},{"1":"Grievous","2":"216","3":"159.0","4":"none","5":"brown, white","6":"green, yellow","7":"NA","8":"male","9":"masculine","10":"Kalee","11":"Kaleesh"},{"1":"Tarfful","2":"234","3":"136.0","4":"brown","5":"brown","6":"blue","7":"NA","8":"male","9":"masculine","10":"Kashyyyk","11":"Wookiee"},{"1":"Raymus Antilles","2":"188","3":"79.0","4":"brown","5":"light","6":"brown","7":"NA","8":"male","9":"masculine","10":"Alderaan","11":"Human"},{"1":"Sly Moore","2":"178","3":"48.0","4":"none","5":"pale","6":"white","7":"NA","8":"NA","9":"NA","10":"Umbara","11":"NA"},{"1":"Tion Medon","2":"206","3":"80.0","4":"none","5":"grey","6":"black","7":"NA","8":"male","9":"masculine","10":"Utapau","11":"Pau'an"},{"1":"Finn","2":"NA","3":"NA","4":"black","5":"dark","6":"dark","7":"NA","8":"male","9":"masculine","10":"NA","11":"Human"},{"1":"Rey","2":"NA","3":"NA","4":"brown","5":"light","6":"hazel","7":"NA","8":"female","9":"feminine","10":"NA","11":"Human"},{"1":"Poe Dameron","2":"NA","3":"NA","4":"brown","5":"light","6":"brown","7":"NA","8":"male","9":"masculine","10":"NA","11":"Human"},{"1":"BB8","2":"NA","3":"NA","4":"none","5":"none","6":"black","7":"NA","8":"none","9":"masculine","10":"NA","11":"Droid"},{"1":"Captain Phasma","2":"NA","3":"NA","4":"unknown","5":"unknown","6":"unknown","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA"},{"1":"Padmé Amidala","2":"165","3":"45.0","4":"brown","5":"light","6":"brown","7":"46.0","8":"female","9":"feminine","10":"Naboo","11":"Human"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 7% 95%
+background-size: 9%
+
+# Filter rows with `filter()`
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 7% 95%
+background-size: 9%
+
+# Sort rows with `arrange()`
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 7% 95%
+background-size: 9%
+
+# Create columns with `mutate()`
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
