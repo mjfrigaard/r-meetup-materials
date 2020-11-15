@@ -171,7 +171,11 @@ background-image: url(img/dplyr.png)
 background-position: 50% 10%
 background-size: 25%
 
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
 # Viewing the data = `glimpse()`
+
+### *We need to view the data we're manipulating to see if the changes are correct*
 
 
 ---
@@ -182,7 +186,7 @@ background-size: 7%
 
 # View = `glimpse()`
 
-#### Take a look at the dataset using `dplyr::glimpse()`
+#### Take a look at the entire dataset using `dplyr::glimpse()`
 
 --
 
@@ -193,13 +197,14 @@ glimpse(orginal_starwars)
 
 ```
 ## Rows: 6
-## Columns: 6
-## $ name      &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "Le…
-## $ height    &lt;dbl&gt; 172, 167, 96, 150, 228, 180
-## $ mass      &lt;dbl&gt; 77, 75, 32, 49, 112, 80
-## $ gender    &lt;chr&gt; "masculine", "masculine", "masculine", …
-## $ species   &lt;chr&gt; "Human", "Droid", "Droid", "Human", "Wo…
-## $ homeworld &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Alder…
+## Columns: 7
+## $ name       &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "L…
+## $ height     &lt;dbl&gt; 172, 167, 96, 150, 228, 180
+## $ mass       &lt;dbl&gt; 77, 75, 32, 49, 112, 80
+## $ hair_color &lt;chr&gt; "blond", NA, NA, "brown", "brown", "br…
+## $ gender     &lt;chr&gt; "masculine", "masculine", "masculine",…
+## $ species    &lt;chr&gt; "Human", "Droid", "Droid", "Human", "W…
+## $ homeworld  &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Alde…
 ```
 
 #### `glimpse()` transposes the data and prints as much of it to the screen as possible
@@ -223,7 +228,7 @@ orginal_starwars
 
 &lt;div data-pagedtable="false"&gt;
   &lt;script data-pagedtable-source type="application/json"&gt;
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["gender"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"masculine","5":"Human","6":"Tatooine"},{"1":"C-3PO","2":"167","3":"75","4":"masculine","5":"Droid","6":"Tatooine"},{"1":"R2-D2","2":"96","3":"32","4":"masculine","5":"Droid","6":"Naboo"},{"1":"Leia Organa","2":"150","3":"49","4":"feminine","5":"Human","6":"Alderaan"},{"1":"Chewbacca","2":"228","3":"112","4":"masculine","5":"Wookiee","6":"Kashyyyk"},{"1":"Han Solo","2":"180","3":"80","4":"masculine","5":"Human","6":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["gender"],"name":[5],"type":["chr"],"align":["left"]},{"label":["species"],"name":[6],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[7],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"masculine","6":"Human","7":"Tatooine"},{"1":"C-3PO","2":"167","3":"75","4":"NA","5":"masculine","6":"Droid","7":"Tatooine"},{"1":"R2-D2","2":"96","3":"32","4":"NA","5":"masculine","6":"Droid","7":"Naboo"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"feminine","6":"Human","7":"Alderaan"},{"1":"Chewbacca","2":"228","3":"112","4":"brown","5":"masculine","6":"Wookiee","7":"Kashyyyk"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"masculine","6":"Human","7":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   &lt;/script&gt;
 &lt;/div&gt;
 
@@ -290,7 +295,7 @@ select(orginal_starwars, -c(mass, height, gender))
 
 &lt;div data-pagedtable="false"&gt;
   &lt;script data-pagedtable-source type="application/json"&gt;
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["species"],"name":[2],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"Human","3":"Tatooine"},{"1":"C-3PO","2":"Droid","3":"Tatooine"},{"1":"R2-D2","2":"Droid","3":"Naboo"},{"1":"Leia Organa","2":"Human","3":"Alderaan"},{"1":"Chewbacca","2":"Wookiee","3":"Kashyyyk"},{"1":"Han Solo","2":"Human","3":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["hair_color"],"name":[2],"type":["chr"],"align":["left"]},{"label":["species"],"name":[3],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"blond","3":"Human","4":"Tatooine"},{"1":"C-3PO","2":"NA","3":"Droid","4":"Tatooine"},{"1":"R2-D2","2":"NA","3":"Droid","4":"Naboo"},{"1":"Leia Organa","2":"brown","3":"Human","4":"Alderaan"},{"1":"Chewbacca","2":"brown","3":"Wookiee","4":"Kashyyyk"},{"1":"Han Solo","2":"brown","3":"Human","4":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   &lt;/script&gt;
 &lt;/div&gt;
 
@@ -322,7 +327,7 @@ filter(orginal_starwars, species == "Human")
 
 &lt;div data-pagedtable="false"&gt;
   &lt;script data-pagedtable-source type="application/json"&gt;
-{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["gender"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"masculine","5":"Human","6":"Tatooine"},{"1":"Leia Organa","2":"150","3":"49","4":"feminine","5":"Human","6":"Alderaan"},{"1":"Han Solo","2":"180","3":"80","4":"masculine","5":"Human","6":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["gender"],"name":[5],"type":["chr"],"align":["left"]},{"label":["species"],"name":[6],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[7],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"masculine","6":"Human","7":"Tatooine"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"feminine","6":"Human","7":"Alderaan"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"masculine","6":"Human","7":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   &lt;/script&gt;
 &lt;/div&gt;
 
@@ -360,6 +365,9 @@ background-size: 9%
 ### We can combine logical condtions with `&amp;` or `,` 
 
 
+```r
+filter(orginal_starwars, )
+```
 
 
 

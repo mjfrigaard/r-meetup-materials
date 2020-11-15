@@ -184,7 +184,11 @@ background-image: url(img/dplyr.png)
 background-position: 50% 10%
 background-size: 25%
 
+<br><br><br><br>
+
 # Viewing the data = `glimpse()`
+
+### *We need to view the data we're manipulating to see if the changes are correct*
 
 
 ---
@@ -195,7 +199,7 @@ background-size: 7%
 
 # View = `glimpse()`
 
-#### Take a look at the dataset using `dplyr::glimpse()`
+#### Take a look at the entire dataset using `dplyr::glimpse()`
 
 --
 
@@ -355,7 +359,7 @@ background-size: 9%
 ### We can combine logical condtions with `&` or `,` 
 
 ```{r , eval=FALSE}
-
+filter(orginal_starwars, )
 ```
 
 
