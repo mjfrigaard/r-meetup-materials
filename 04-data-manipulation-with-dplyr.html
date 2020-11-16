@@ -4,7 +4,7 @@
     <title>Data Manipulation with R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Martin Frigaard" />
-    <meta name="date" content="2020-11-15" />
+    <meta name="date" content="2020-11-16" />
     <script src="04-data-manipulation-with-dplyr_files/header-attrs/header-attrs.js"></script>
     <link href="04-data-manipulation-with-dplyr_files/pagedtable/css/pagedtable.css" rel="stylesheet" />
     <script src="04-data-manipulation-with-dplyr_files/pagedtable/js/pagedtable.js"></script>
@@ -15,9 +15,9 @@
 class: center, middle, inverse, title-slide
 
 # Data Manipulation with R
-## BioMarin Meetup: transforming, reformatting, and calculating variables
+## BioMarin CSM: An introduction to the dplyr package
 ### Martin Frigaard
-### 2020-11-15
+### 2020-11-16
 
 ---
 
@@ -36,13 +36,34 @@ background-size: 9%
 
 # Objectives 
 
-&lt;br&gt;
-
 ## 1) Common data manipulation tasks
 
 ## 2) `dplyr`'s verbs 
 
 ## 3) the pipe `%&gt;%` 
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 10%
+background-size: 9%
+
+# Materials 
+
+### Follow along with the exercises:
+
+https://mjfrigaard.github.io/data-manip-intro-exercises/Index.html
+
+### A web version of these slides is located:
+
+https://mjfrigaard.github.io/data-manip-intro/Index.html
+
+### The RStudio.Cloud project:
+https://rstudio.cloud/project/1918833
+
+
+
+
 
 ---
 class: left, top
@@ -631,7 +652,7 @@ mutate(original_starwars,
 ---
 class: left, top
 background-image: url(img/dplyr.png)
-background-position: 5% 95%
+background-position: 95% 20%
 background-size: 7%
 
 # Create columns with `mutate()`
@@ -700,7 +721,7 @@ https://magrittr.tidyverse.org/
 
 .pull-left[
 
-***Windows***
+***Mac***
 
 #### `Cmd` + `Shift` + `M`
 
@@ -710,7 +731,7 @@ https://magrittr.tidyverse.org/
 
 .pull-right[
 
-***Mac***
+***Windows***
 
 #### `Crtl` + `Shift` + `M`
 
@@ -753,7 +774,7 @@ background-size: 8%
 
 --
 
-&lt;img src="img/pipe-03.png" width="60%" height="60%" style="display: block; margin: auto auto auto 0;" /&gt;
+&lt;img src="img/pipe-03.png" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
 
 ***`%&gt;%` can be read as "then"***
 
@@ -863,6 +884,9 @@ background-size: 8%
 ### 3. [Stack Overflow questions tagged with `dplyr`](https://stackoverflow.com/questions/tagged/dplyr)
 
 ### 4. [RStudio Community posts tagged `dplyr`](https://community.rstudio.com/tag/dplyr)
+
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

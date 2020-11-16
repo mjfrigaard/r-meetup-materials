@@ -60,7 +60,7 @@ background-size: 9%
 
 https://mjfrigaard.github.io/data-manip-intro-exercises/Index.html
 
-### A web version of these slides file is located:
+### A web version of these slides is located:
 
 https://mjfrigaard.github.io/data-manip-intro/Index.html
 
@@ -705,7 +705,7 @@ https://magrittr.tidyverse.org/
 
 .pull-left[
 
-***Windows***
+***Mac***
 
 #### `Cmd` + `Shift` + `M`
 
@@ -715,7 +715,7 @@ https://magrittr.tidyverse.org/
 
 .pull-right[
 
-***Mac***
+***Windows***
 
 #### `Crtl` + `Shift` + `M`
 
@@ -876,6 +876,5 @@ background-size: 8%
 
 
 ```{r chrome_print, eval=FALSE, echo=FALSE}
-pagedown::chrome_print("04-data-manipulation-with-dplyr.html", output = "pdfs/04-data-manipulation-with-dplyr.pdf")
+pagedown::chrome_print("Index.html")
 ```
-
