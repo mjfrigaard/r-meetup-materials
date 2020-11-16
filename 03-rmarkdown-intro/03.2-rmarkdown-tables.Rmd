@@ -1,0 +1,35 @@
+---
+title: "Displaying data in tables with R Markdown"
+subtitle: "BioMarin CSM: interactive html tables"
+author: "Martin Frigaard"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(gapminder)
+library(here)
+options(tibble.max_extra_cols = 6, 
+        tibble.width = 60)
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE, 
+                      message = FALSE, 
+                      tidy = FALSE, 
+                      fig.align = 'center',
+                      dpi = 320)
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+# xaringanthemer::style_duo(primary_color = "#F0FFFF", secondary_color = "#CD0000")
+xaringanthemer::style_duo_accent(primary_color = "#035AA6", secondary_color = "#03A696")
+```
+
+```{r xaringan-inf_mr, echo=FALSE, eval=FALSE, include=FALSE}
+# xaringan::inf_mr() # for instant knitting and reviewing
+```

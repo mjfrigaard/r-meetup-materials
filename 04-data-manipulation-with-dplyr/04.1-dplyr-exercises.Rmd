@@ -1,0 +1,311 @@
+---
+title: "BioMarin Data Manipulation Training: An Introduction to Wrangling Data"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: yes
+    highlight: tango
+    theme: lumen
+    df_print: paged
+    
+params: 
+  data_file: !r file.path("https://bit.ly/mini-strwrs")
+
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ipcwswitch)
+library(skimr)
+# create data folder
+knitr::opts_chunk$set(warning = FALSE, 
+                      message = FALSE,
+                      tidy = FALSE,
+                      size = "Huge")
+
+original_starwars <- read_csv("https://bit.ly/mini-strwrs")
+```
+
+# Objectives 
+
+This document outlines some common data manipulation tasks with `dplyr`. The slides for this presentation are [here](https://mjfrigaard.github.io/data-manip-intro/Index.html#1). There is also an accompanying RStudio.Cloud project [here.](https://rstudio.cloud/project/1918833) 
+
+
+
+Read more about `dplyr` [here](https://dplyr.tidyverse.org/index.html) on the tidyverse website, or in the [Data Transformation](https://r4ds.had.co.nz/transform.html) chapter of R for Data Science. 
+
+## Load packages 
+
+`dplyr` is part of the core `tidyverse` packages, so we install and load this meta-package below. 
+
+```{r packages, eval=FALSE}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+
+## Import data {.tabset}
+
+We have the path to the `original_starwars` data stored in our `params`, but we will also go over how to build this dataset from `dplyr::starwars`. 
+
+### Import using url
+
+Below we import the `original_starwars` dataset from the slides using the url. This is similar to providing a local file path (`data/original-starwars.csv`).
+
+```{r import-url}
+read_csv("https://bit.ly/mini-strwrs")
+```
+
+### Import using `params`
+
+We have the `params` list from our YAML header, which we can also use to import the data. 
+
+```{.yaml}
+params: 
+  data_file: !r file.path("https://bit.ly/mini-strwrs")
+```
+
+```{r import-params}
+readr::read_csv(params$data_file)
+```
+
+### Create from `dplyr`
+
+We can also manually create `original_starwars` using the code below (which we cover in this training). 
+
+```{r manually-create-original_starwars}
+dplyr::starwars %>% 
+    dplyr::select(name, height, mass, hair_color, species, homeworld) %>% 
+    filter(name %in% c("Luke Skywalker", "C-3PO", "R2-D2", 
+                       "Leia Organa", "Chewbacca", "Han Solo"))
+```
+
+## Selecting columns {.tabset}
+
+These are exercises to try on your own using the `select()` function.
+
+### Select exercise 1
+
+Alter the code below to select just the `name` and `homeoworld` column:
+
+```{r select-ex-01, eval=FALSE}
+select(original_starwars, name, species, homeworld)
+```
+
+
+### Select solution 1
+
+```{r select-sol-01}
+select(original_starwars, name, homeworld)
+```
+
+
+### Select exercise 2
+
+Select only the columns starting with the letter `h`. 
+
+```{r select-ex-02, eval=FALSE}
+select(original_starwars, starts_with("_"))
+```
+
+
+### Select solution 2
+
+```{r select-sol-02}
+select(original_starwars, starts_with("h"))
+```
+
+## Filtering rows {.tabset}
+
+These are some additional exercises for `filter()`ing data. 
+
+### Filtering exercise 1
+
+Change the code below so `original_starwars` only includes the droids. 
+
+```{r filter-ex-01, eval=FALSE}
+filter(original_starwars, species == "____")
+```
+
+
+### Filtering solution 1
+
+```{r filter-sol-01}
+filter(original_starwars, species == "Droid")
+```
+
+### Filtering exercise 2
+
+Change the code below so `original_starwars` only includes data from the `homeworld`s of `Tatooine` and `Alderaan`
+
+```{r filter-ex-02, eval=FALSE}
+filter(original_starwars, 
+       homeworld %in% c("________", "________"))
+```
+
+### Filtering solution 2
+
+```{r filter-sol-02}
+filter(original_starwars, 
+       homeworld %in% c("Tatooine", "Alderaan"))
+```
+
+
+## Arranging data {.tabset}
+
+`arrange()` sorts variables on their content, numeric or character. 
+
+### Arrange exercise 1 
+
+Sort `original_starwars` according to the `hair_color`. 
+
+```{r arrange-ex-01, eval=FALSE}
+arrange(original_starwars, "____ _____")
+```
+
+
+### Arrange solution 1 
+
+Note that the missing values are sorted to the bottom. 
+
+```{r arrange-sol-01}
+arrange(original_starwars, hair_color)
+```
+
+
+### Arrange exercise 2
+
+Sort `original_starwars` by `height` and `mass`, descending. 
+
+```{r arrange-ex-02, eval=FALSE}
+arrange(original_starwars, desc(______, ____))
+```
+
+### Arrange solution 2
+
+```{r arrange-sol-02}
+arrange(original_starwars, desc(height, mass))
+```
+
+Including two variables is helpful if some of the values 'tie'. 
+
+## Mutate columns {.tabset}
+
+`mutate()` can create new columns, or change existing columns.  
+
+### Mutate exercise 1 
+
+Alter the code below to create a `bmi` column for `starwars` characters in `original_starwars`.
+
+```{r mutate-ex-01, eval=FALSE}
+mutate(original_starwars, 
+       bmi = ____ / ((______ / 100) ^ 2))
+```
+
+### Mutate solution 1
+
+Note the use of parentheses here. 
+
+```{r mutate-sol-01}
+mutate(original_starwars, 
+       bmi = mass / ((height / 100) ^ 2))
+```
+
+### Mutate exercise 2
+
+Round the new `bmi` variable to 1 digit. 
+
+```{r mutate-ex-02, eval=FALSE}
+mutate(original_starwars, 
+       bmi = mass / ((height / 100) ^ 2),
+       bmi = _____(___, digits = _))
+```
+
+### Mutate solution 2
+
+```{r mutate-sol-02}
+mutate(original_starwars, 
+       bmi = mass / ((height / 100) ^ 2),
+       bmi = round(bmi, digits = 1))
+```
+
+## Create function pipelines with %>% {.tabset}
+
+The pipe (`%>%`) takes an object that comes before it, and it drops the object into the function that comes after it.
+
+### Pipe exercise 1 
+
+Rewrite the code below to use the pipe 
+
+```{r pipe-ex-01, eval=FALSE}
+select(filter(
+          original_starwars, mass < ___), 
+              ____, hair_color, _______, homeworld)
+```
+
+### Pipe solutons 1
+
+This actually wouldn't matter what order it was in--both would return the same result. 
+
+```{r pipe-sol-01}
+original_starwars %>% 
+  filter(mass < 100) %>% 
+  select(name, hair_color, species, homeworld)
+```
+
+
+### Pipe exercise 2
+
+Perform the following operations *without* using the pipe. 
+
+1. create object `x` with three values, (`3`, `7`, `12`)    
+2. get the `mean()` of `x`, and store it in `mean_x`   
+3. take the squared root of `mean_x`  
+
+```{r pipe-ex-02, eval=FALSE}
+# 1) 
+_ <- c(_, _, __)
+# 2) 
+mean_x <- ____(x)
+# 3 
+sqrt(______)
+```
+
+### Pipe soluton 2
+
+This returns a vector, not a `tibble`.
+
+```{r pipe-sol-02}
+# 1) 
+x <- c(3, 7, 12)
+# 2) 
+mean_x <- mean(x)
+# 3 
+sqrt(mean_x)
+```
+
+### Pipe exercise 3
+
+Perform the following operations *with* the pipe. 
+
+1. create object `x` with three values, (`3`, `7`, `12`)    
+2. get the `mean()` of `x`, and store it in `mean_x`   
+3. take the squared root of `mean_x`
+
+```{r pipe-ex-03, eval=FALSE}
+c(_, _, __) %>% 
+  ____() %>% 
+  ____()
+```
+
+
+### Pipe solutons 3
+
+Note that we can create a pipeline without even creating an object. 
+
+```{r pipe-sol-03}
+c(3, 7, 12) %>% 
+  mean() %>% 
+  sqrt()
+```

@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data Manipulation with R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Martin Frigaard" />
+    <meta name="date" content="2020-11-16" />
+    <script src="04-data-manipulation-with-dplyr_files/header-attrs/header-attrs.js"></script>
+    <link href="04-data-manipulation-with-dplyr_files/pagedtable/css/pagedtable.css" rel="stylesheet" />
+    <script src="04-data-manipulation-with-dplyr_files/pagedtable/js/pagedtable.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Data Manipulation with R
+## BioMarin CSM: An introduction to the dplyr package
+### Martin Frigaard
+### 2020-11-16
+
+---
+
+
+
+class: middle, center
+
+
+
+
+
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 10%
+background-size: 9%
+
+# Objectives 
+
+## 1) Common data manipulation tasks
+
+## 2) `dplyr`'s verbs 
+
+## 3) the pipe `%&gt;%` 
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 10%
+background-size: 9%
+
+# Materials 
+
+### Follow along with the exercises:
+
+https://mjfrigaard.github.io/data-manip-intro-exercises/Index.html
+
+### A web version of these slides is located:
+
+https://mjfrigaard.github.io/data-manip-intro/Index.html
+
+### The RStudio.Cloud project:
+https://rstudio.cloud/project/1918833
+
+
+
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 10%
+background-size: 9%
+
+# What are common data manipulation tasks?
+
+.pull-left[
+
+### 1. Viewing the dataset
+
+### 2. Choosing columns/rows 
+
+### 3. Ordering rows
+
+]
+
+--
+
+.pull-right[
+
+### 4. Changing existing columns  
+
+### 5. Creating or calculating new columns 
+
+]
+
+---
+class: inverse, center, bottom
+background-image: url(img/dplyr.png)
+background-position: 50% 10%
+background-size: 35%
+
+# `dplyr` = a grammar for data manipulation
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 10%
+background-size: 9%
+
+# `dplyr` = "dee + ply + ARRRR"
+
+.pull-left[
+
+#### *Pliers* are tools for grasping or manipulating common objects 
+
+]
+
+--
+
+.pull-right[
+
+
+#### The `dplyr` package has a variety of verbs for performing common data manipulations
+
+]
+
+--
+
+&lt;img src="img/pliers.png" width="45%" height="45%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 9%
+
+# The `starwars` dataset  
+
+### These data come from the Star Wars API: 
+
+&lt;img src="img/star-wars.jpeg" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
+
+--
+
+### Read more about the data here:
+
+https://dplyr.tidyverse.org/reference/starwars.html
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 9%
+background-size: 9%
+
+# Load the `starwars` dataset
+
+### The `starwars` data comes from the `dplyr` package, so we can access it using the code below:
+
+
+```r
+install.packages("dplyr")
+library(dplyr)
+dplyr::starwars
+```
+
+--
+
+### We'll use a smaller version of this dataset (`original_starwars`) to show `dplyr`'s common data manipluation verbs
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 5% 95%
+background-size: 7%
+
+# Import `original_starwars` 
+
+--
+
+### Import the data using the url and `readr`
+
+
+```r
+library(readr)
+original_starwars &lt;- read_csv("https://bit.ly/mini-strwrs")
+```
+
+--
+
+### This loads the dataset into our ***Environment*** pane
+
+&lt;img src="img/starwars-env.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 9%
+
+# `dplyr` verbs
+
+### The primary verbs for data manipulation in `dplyr`:
+
+### `glimpse()`
+
+### `select()` 
+
+### `filter()`  
+
+### `arrange()` 
+
+### `mutate()`
+
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 10%
+background-size: 25%
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# Viewing the data = `glimpse()`
+
+### *We need to view the data we're manipulating to see if the changes are correct*
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 5% 95%
+background-size: 7%
+
+# View = `glimpse()`
+
+#### Take a look at the entire dataset using `dplyr::glimpse()`
+
+--
+
+
+```r
+glimpse(original_starwars)
+```
+
+```
+## Rows: 6
+## Columns: 6
+## $ name       &lt;chr&gt; "Luke Skywalker", "C-3PO", "R2-D2", "L…
+## $ height     &lt;dbl&gt; 172, 167, 96, 150, 228, 180
+## $ mass       &lt;dbl&gt; 77, 75, 32, 49, 112, 80
+## $ hair_color &lt;chr&gt; "blond", NA, NA, "brown", "brown", "br…
+## $ species    &lt;chr&gt; "Human", "Droid", "Droid", "Human", "W…
+## $ homeworld  &lt;chr&gt; "Tatooine", "Tatooine", "Naboo", "Alde…
+```
+
+#### `glimpse()` transposes the data and prints as much of it to the screen as possible
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 5% 95%
+background-size: 7%
+
+## View the data in the ***Console***
+
+*Enter the name of the dataset to print it to the Console*
+
+
+```r
+original_starwars
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"Human","6":"Tatooine"},{"1":"C-3PO","2":"167","3":"75","4":"NA","5":"Droid","6":"Tatooine"},{"1":"R2-D2","2":"96","3":"32","4":"NA","5":"Droid","6":"Naboo"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"Human","6":"Alderaan"},{"1":"Chewbacca","2":"228","3":"112","4":"brown","5":"Wookiee","6":"Kashyyyk"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"Human","6":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 5% 95%
+background-size: 7%
+
+## View the data in the *Data Viewer*
+
+#### View the `original_starwars` dataset using RStudio's data editor
+
+&lt;img src="img/starwars-dataviewer.png" width="80%" height="80%" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 10%
+background-size: 25%
+
+# Choosing columns = `select()`
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 15%
+background-size: 9%
+
+## Choose columns with `select()`
+
+#### `select()` allows us to pick specific columns out of a dataset
+
+
+```r
+select(original_starwars, name, homeworld, species)
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[2],"type":["chr"],"align":["left"]},{"label":["species"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"Tatooine","3":"Human"},{"1":"C-3PO","2":"Tatooine","3":"Droid"},{"1":"R2-D2","2":"Naboo","3":"Droid"},{"1":"Leia Organa","2":"Alderaan","3":"Human"},{"1":"Chewbacca","2":"Kashyyyk","3":"Wookiee"},{"1":"Han Solo","2":"Corellia","3":"Human"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 15%
+background-size: 9%
+
+## Choose columns with `select()`
+
+#### We can use negation (`-`) to remove columns
+
+
+```r
+select(original_starwars, -c(mass, height, hair_color))
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["species"],"name":[2],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"Human","3":"Tatooine"},{"1":"C-3PO","2":"Droid","3":"Tatooine"},{"1":"R2-D2","2":"Droid","3":"Naboo"},{"1":"Leia Organa","2":"Human","3":"Alderaan"},{"1":"Chewbacca","2":"Wookiee","3":"Kashyyyk"},{"1":"Han Solo","2":"Human","3":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 9%
+background-size: 9%
+
+# `select()` helpers
+
+#### `select()` comes with 'helpers' to make chosing columns easier (and reduces typing!)
+
+Helper                | Outputs
+:-------------------  | :--------------------------------------
+`starts_with()`       | choose columns starting with...
+`ends_with()`         | choose columns ending with...
+`contains`            | choose columns with names containing...
+`matches()`           | choose columns matching regex...
+`one_of()`            | choose columns from a set of names...
+`num_range()`         | choose columns from a numerical index...
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 15%
+background-size: 9%
+
+## Choose columns with `select()` 
+
+### Select columns using `matches()` 
+
+
+```r
+select(original_starwars, name, matches("_"))
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["hair_color"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"blond"},{"1":"C-3PO","2":"NA"},{"1":"R2-D2","2":"NA"},{"1":"Leia Organa","2":"brown"},{"1":"Chewbacca","2":"brown"},{"1":"Han Solo","2":"brown"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 15%
+background-size: 20%
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# See the `select()` exercises for more examples!
+
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 10%
+background-size: 25%
+
+&lt;br&gt;&lt;br&gt;
+
+# Choosing rows with `filter()`
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 8% 94%
+background-size: 7%
+
+# Choose rows with `filter()` 
+
+### `filter()` lets us pull out rows based on logical conditions
+
+
+```r
+filter(original_starwars, species == "Human")
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"Human","6":"Tatooine"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"Human","6":"Alderaan"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"Human","6":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: left top
+background-image: url(img/dplyr.png)
+background-position: 7% 95%
+background-size: 9%
+
+# Choose rows with `filter()` 
+
+### `filter()` logical conditions include: 
+
+Logical Test        | Outputs
+:--------------:    | :--------------------------:
+`&lt;`                 | Less than
+`&gt;`                 | Greater than
+`==`                | Equal to
+`&lt;=`                | Less than or equal to
+`&gt;=`                | Greater than or equal to
+`!=`                | Not equal to
+`%in%`              | Group membership
+`is.na()`           | is NA (missing)
+`!is.na()`          | is not NA (non-missing)
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 7% 95%
+background-size: 9%
+
+# Choose rows with `filter()` 
+
+### Combine logical condtions with `&amp;` or `,` 
+
+*this gets the same results...*
+
+
+```r
+filter(original_starwars, 
+          species == "Human" &amp; !is.na(hair_color))
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"Human","6":"Tatooine"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"Human","6":"Alderaan"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"Human","6":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 7%
+background-size: 9%
+
+# Choose rows with `filter()` 
+
+### Combine logical condtions with `&amp;` or `,` 
+
+*...as this*
+
+
+```r
+filter(original_starwars, 
+          species == "Human" , !is.na(hair_color))
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"Human","6":"Tatooine"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"Human","6":"Alderaan"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"Human","6":"Corellia"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 7%
+background-size: 9%
+
+# Choose rows with `filter()` 
+
+#### Remember that *any* logical condition works for `filter()`ing, so we can borrow functions from other packages to help us 
+
+--
+
+
+```r
+filter(original_starwars, 
+       str_detect(string = name, pattern = "[:digit:]"))
+```
+
+--
+
+#### The `stringr::str_detect()` function returns a logical condition, so we can use it *inside* `filter()`
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"C-3PO","2":"167","3":"75","4":"NA","5":"Droid","6":"Tatooine"},{"1":"R2-D2","2":"96","3":"32","4":"NA","5":"Droid","6":"Naboo"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 15%
+background-size: 20%
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# See the `filter()` exercises for more examples!
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 10%
+background-size: 25%
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# Sorting rows with `arrange()`
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 7%
+background-size: 10%
+
+# Sort rows with `arrange()`
+
+### `arrange()` sorts the contents of a dataset (ascending or descending)
+
+
+```r
+arrange(original_starwars, height)
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"R2-D2","2":"96","3":"32","4":"NA","5":"Droid","6":"Naboo"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"Human","6":"Alderaan"},{"1":"C-3PO","2":"167","3":"75","4":"NA","5":"Droid","6":"Tatooine"},{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"Human","6":"Tatooine"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"Human","6":"Corellia"},{"1":"Chewbacca","2":"228","3":"112","4":"brown","5":"Wookiee","6":"Kashyyyk"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 7%
+background-size: 10%
+
+# Sort rows with `arrange()`
+
+### `arrange()`'s default is to sort ascending--include `desc()` to sort descending
+
+
+```r
+arrange(original_starwars, desc(height))
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Chewbacca","2":"228","3":"112","4":"brown","5":"Wookiee","6":"Kashyyyk"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"Human","6":"Corellia"},{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"Human","6":"Tatooine"},{"1":"C-3PO","2":"167","3":"75","4":"NA","5":"Droid","6":"Tatooine"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"Human","6":"Alderaan"},{"1":"R2-D2","2":"96","3":"32","4":"NA","5":"Droid","6":"Naboo"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 15%
+background-size: 20%
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# See the `arrange()` exercises for more examples!
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 94% 22%
+background-size: 8%
+
+# Create columns with `mutate()`
+
+### `mutate()` allows us to create new columns
+
+
+```r
+mutate(original_starwars, 
+            # create new bmi variable
+            bmi = mass / ((height / 100) ^ 2))
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]},{"label":["bmi"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"Human","6":"Tatooine","7":"26.02758"},{"1":"C-3PO","2":"167","3":"75","4":"NA","5":"Droid","6":"Tatooine","7":"26.89232"},{"1":"R2-D2","2":"96","3":"32","4":"NA","5":"Droid","6":"Naboo","7":"34.72222"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"Human","6":"Alderaan","7":"21.77778"},{"1":"Chewbacca","2":"228","3":"112","4":"brown","5":"Wookiee","6":"Kashyyyk","7":"21.54509"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"Human","6":"Corellia","7":"24.69136"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 95% 20%
+background-size: 7%
+
+# Create columns with `mutate()`
+
+--
+
+#### `mutate()` allows us to change existing columns, too
+
+
+```r
+mutate(original_starwars, 
+            # create bmi
+            bmi = mass / ((height / 100) ^ 2),
+            # change bmi
+            bmi = round(bmi, digits = 0))
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["hair_color"],"name":[4],"type":["chr"],"align":["left"]},{"label":["species"],"name":[5],"type":["chr"],"align":["left"]},{"label":["homeworld"],"name":[6],"type":["chr"],"align":["left"]},{"label":["bmi"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"Luke Skywalker","2":"172","3":"77","4":"blond","5":"Human","6":"Tatooine","7":"26"},{"1":"C-3PO","2":"167","3":"75","4":"NA","5":"Droid","6":"Tatooine","7":"27"},{"1":"R2-D2","2":"96","3":"32","4":"NA","5":"Droid","6":"Naboo","7":"35"},{"1":"Leia Organa","2":"150","3":"49","4":"brown","5":"Human","6":"Alderaan","7":"22"},{"1":"Chewbacca","2":"228","3":"112","4":"brown","5":"Wookiee","6":"Kashyyyk","7":"22"},{"1":"Han Solo","2":"180","3":"80","4":"brown","5":"Human","6":"Corellia","7":"25"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 15%
+background-size: 20%
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# See the `mutate()` exercises for more examples!
+
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 15%
+background-size: 20%
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# Write clearer code with the pipe `%&gt;%`
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 93% 10%
+background-size: 8%
+
+# The pipe (`%&gt;%`) 
+
+### The pipe comes from the `magrittr` package: 
+
+https://magrittr.tidyverse.org/
+
+--
+
+### The pipe makes our code easier to read (and write) 
+
+### Create pipes easily with keyboard shortcuts
+
+--
+
+.pull-left[
+
+***Mac***
+
+#### `Cmd` + `Shift` + `M`
+
+]
+
+--
+
+.pull-right[
+
+***Windows***
+
+#### `Crtl` + `Shift` + `M`
+
+]
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 93% 10%
+background-size: 8%
+
+# How the pipe (`%&gt;%`) works 
+
+--
+
+### Without the pipe, we have to constantly assign the output to new object:
+
+--
+
+&lt;img src="img/pipe-00.png" width="70%" height="70%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+--
+
+### Or use nested functions:
+
+--
+
+&lt;img src="img/pipe-01.png" width="90%" height="90%" style="display: block; margin: auto auto auto 0;" /&gt;
+ 
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 93% 10%
+background-size: 8%
+
+# How the pipe (`%&gt;%`) works
+
+### The pipe allows us to pass the output from functions left-to-right
+
+--
+
+&lt;img src="img/pipe-03.png" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
+
+***`%&gt;%` can be read as "then"***
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 97% 8%
+background-size: 8%
+
+# Creating pipelines of functions
+
+### Review the code below and think about what each object contains:
+
+1. Filter `original_starwars` to only brown-haired characters over 100 cm tall  
+2. Create a `bmi` column using:  `mass / ((height / 100) ^ 2)`    
+3. Select `name`, `bmi`, and `homeworld`   
+4. Arrange the data by `bmi`, descending  
+
+
+```r
+object_01 &lt;- filter(original_starwars, 
+                    hair_color == "brown" &amp; height &gt; 100) 
+object_02 &lt;- mutate(object_01, bmi = mass / ((height / 100) ^ 2))
+object_03 &lt;- select(object_02, name, bmi, homeworld)
+object_04 &lt;- arrange(object_03, desc(bmi))
+```
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 10% 95%
+background-size: 8%
+
+# Creating pipelines of functions
+
+### Re-write these functions into a pipeline, ending with a single output (new_original_starwars)
+
+1. Filter `original_starwars` to only brown-haired characters over 100 cm tall  
+2. Create a `bmi` column using:  `mass / ((height / 100) ^ 2)`    
+3. Select `name`, `bmi`, and `homeworld`   
+4. Arrange the data by `bmi`, descending 
+
+--
+
+
+```r
+original_starwars %&gt;% 
+  filter(hair_color == "_____" &amp; height &gt; ___) %&gt;% 
+  mutate(___ = mass / ((height / 100) ^ 2)) %&gt;% 
+  select(____, bmi, _________) %&gt;% 
+  arrange(____(bmi)) -&gt; new_original_starwars
+```
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 10% 95%
+background-size: 8%
+
+# Creating pipelines of functions
+
+The answer is below:
+
+
+```r
+original_starwars %&gt;% 
+  filter(hair_color == "brown" &amp; height &gt; 100) %&gt;% 
+  mutate(bmi = mass / ((height / 100) ^ 2)) %&gt;% 
+  select(name, bmi, homeworld) %&gt;% 
+  arrange(desc(bmi)) -&gt; new_original_starwars
+new_original_starwars
+```
+
+--
+
+&lt;div data-pagedtable="false"&gt;
+  &lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["bmi"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["homeworld"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Han Solo","2":"24.69136","3":"Corellia"},{"1":"Leia Organa","2":"21.77778","3":"Alderaan"},{"1":"Chewbacca","2":"21.54509","3":"Kashyyyk"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+
+---
+class: inverse, center, middle
+background-image: url(img/dplyr.png)
+background-position: 50% 15%
+background-size: 20%
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# See the `pipe` exercises for more examples!
+
+
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 10% 95%
+background-size: 8%
+
+# Resources for Data Manipluation 
+
+### 1. [R for Data Science](https://r4ds.had.co.nz/transform.html) 
+
+### 2. [Data Wrangling with R](https://cengel.github.io/R-data-wrangling/) 
+
+### 3. [Stack Overflow questions tagged with `dplyr`](https://stackoverflow.com/questions/tagged/dplyr)
+
+### 4. [RStudio Community posts tagged `dplyr`](https://community.rstudio.com/tag/dplyr)
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
