@@ -1,5 +1,5 @@
 ---
-title: "Data Manipulation with R"
+title: "Advanced Data Manipulation with R"
 subtitle: "BioMarin Meetup: pivoting, separating, and uniting columns"
 author: 
   - "Martin Frigaard"
