@@ -1,6 +1,6 @@
 ---
-title: "Data Joins in R (full, right, left, inner, and fuzzy)"
-subtitle: "BioMarin Meetup: relational data in R"
+title: "Data Transformation and Joins in R"
+subtitle: "BioMarin Meetup: Pivot tables and relational data in R"
 author: 
   - "Martin Frigaard"
 date: '`r Sys.Date()`'
