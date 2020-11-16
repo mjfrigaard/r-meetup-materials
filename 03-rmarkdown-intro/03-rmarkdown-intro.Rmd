@@ -1363,7 +1363,9 @@ class: left, top
 - [R Markdown for Scientists](https://rmd4sci.njtierney.com/): R Markdown for Scientists workshop material
 
 
-```{r chrome_print, eval=FALSE, include=FALSE}
-pagedown::chrome_print("03-rmarkdown-intro.html",output = "pdfs/03-rmarkdown-intro.pdf")
+```{r chrome_print, eval=FALSE, include=FALSE, echo=FALSE}
+fs::dir_create("pdfs")
+pagedown::chrome_print(input = "03-rmarkdown-intro.html", 
+                       output = "pdfs/03-rmarkdown-intro.pdf")
 ```
 
