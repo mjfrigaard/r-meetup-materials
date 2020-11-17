@@ -1,6 +1,6 @@
 ---
-title: "Data Transformation and Joins in R"
-subtitle: "BioMarin Meetup: Pivot tables and relational data in R"
+title: "Data Reshaping in R"
+subtitle: "BioMarin Meetup: reshaping, transforming, and joining data in R"
 author: 
   - "Martin Frigaard"
 date: '`r Sys.Date()`'
@@ -30,21 +30,41 @@ xaringanthemer::style_duo_accent(primary_color = "#035AA6", secondary_color = "#
 ```
 
 class: inverse, center, bottom
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 50% 10%
 background-size: 35%
 
-# dplyr = a tidyverse package for data manipulation
+# dplyr = a package for *manipulating* data
 
+---
+class: inverse, center, bottom
+background-image: url(img/tidyr.png)
+background-position: 50% 10%
+background-size: 35%
 
+# tidyr = a package for *reshaping* data
 
 ---
 class: left, top
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/tidyr.png)
 background-position: 90% 10%
-background-size: 15%
+background-size: 8%
 
-## Primary `dplyr` verbs:
+# Tidy data 
+
+### Observations are in rows 
+
+### Variables are in columns 
+
+### Values are in cells 
+
+---
+class: left, top
+background-image: url(img/dplyr.png)
+background-position: 90% 10%
+background-size: 8%
+
+## Primary `dplyr` verbs recap:
 
 --
 
@@ -64,11 +84,11 @@ background-size: 15%
 
 ---
 class: left, top
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 90% 10%
-background-size: 15%
+background-size: 8%
 
-## Primary `dplyr` verbs (cont):
+## Primary `dplyr` verbs recap (cont):
 
 --
 
@@ -86,12 +106,12 @@ background-size: 15%
 > ***...collapses data to calculate summary statistics***
 
 ---
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 90% 10%
-background-size: 12%
+background-size: 8%
 class: left, top
 
-## dplyr joining functions
+# dplyr joining functions
 
 ### ***`dplyr` also has functions for combining tibbles/data.frames***
 
@@ -115,7 +135,7 @@ class: left, top
 
 
 ---
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 90% 10%
 background-size: 12%
 class: left, top
@@ -162,7 +182,7 @@ rmarkdown::paged_table(Y)
 ]
 
 ---
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 90% 10%
 background-size: 12%
 class: left, top
@@ -230,7 +250,7 @@ class: left, top
 
 
 ---
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 90% 10%
 background-size: 12%
 class: left, top
@@ -300,7 +320,7 @@ class: left, top
 
 
 ---
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 90% 10%
 background-size: 12%
 class: left, top
@@ -379,7 +399,7 @@ class: left, top
 
 
 ---
-background-image: url(http://hexb.in/hexagons/dplyr.png)
+background-image: url(img/dplyr.png)
 background-position: 90% 10%
 background-size: 12%
 class: left, top
