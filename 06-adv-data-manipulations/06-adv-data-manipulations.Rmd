@@ -34,3 +34,9 @@ background-position: 50% 10%
 background-size: 35%
 
 # dplyr = a tidyverse package for data manipulation
+
+```{r}
+library(SPYvsSPY)
+SPYvsSPY::svs %>% 
+  select(yrmo, white_comeuppance, black_comeuppance)
+```

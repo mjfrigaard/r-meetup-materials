@@ -1,0 +1,391 @@
+---
+title: "BioMarin Meetup: reshaping, transforming, and joining data in R (exercises)"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: yes
+    code_folding: hide
+    highlight: tango
+    theme: lumen
+    df_print: paged
+    
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(skimr)
+# create data folder
+knitr::opts_chunk$set(warning = FALSE, 
+                      message = FALSE,
+                      tidy = FALSE)
+```
+
+# Objectives 
+
+This document outlines some common data reshaping tasks with `tidyr`. The slides for this presentation are [here](https://mjfrigaard.github.io/data-transformations-joins/Index.html#1)
+
+There is also an accompanying RStudio.Cloud project: 
+
+Read more about `dplyr` [here](https://dplyr.tidyverse.org/index.html) and [`tidyr`](https://tidyr.tidyverse.org/) on the tidyverse website, or in the [Data Transformation](https://r4ds.had.co.nz/transform.html) chapter of R for Data Science. 
+
+## Load packages 
+
+`tidyr` is part of the core `tidyverse` packages, so we install and load this meta-package below. 
+
+```{r packages, eval=FALSE}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+
+## Manging data {.tabset}
+
+We're going to use some of the `fs` package functions for managing our files and data. 
+
+### Folder trees and paths
+
+Check your files and folders with `dir_tree` or `dir_ls`. 
+
+```{r dir_tree}
+fs::dir_tree(".", recurse = FALSE)
+```
+
+We can also use `dir_ls` to get the paths to print to the screen so we can easily import. 
+
+```{r dir_ls}
+fs::dir_ls(".", recurse = FALSE)
+```
+
+### Metadata 
+
+`fs` also gives us the metadata of any folder we have access to. This can come in handy if we're looking for a specific version of a file, or a file that was created at a specific date. 
+
+```{r fs-fir-info}
+fs::dir_info("data", all = TRUE) %>% 
+    dplyr::arrange(desc(modification_time))
+```
+
+For example, lets look for the largest `file` in the `data` folder. 
+
+```{r largest-file}
+fs::dir_info("data", all = TRUE) %>% 
+    filter(type == "file") %>% 
+    arrange(desc(size)) %>% 
+    select(path, size) %>% 
+    slice(1)
+```
+
+### Import multiple files 
+
+Lets import all the `Lab` data files in `data` using `fs` and `purrr`. 
+
+```{r import-labs}
+fs::dir_ls(path = "data", regexp = "Lab") %>% 
+    purrr::map_dfr(read_csv, .id = "source") -> AllLabs
+AllLabs
+```
+
+***
+
+## `separate()`  {.tabset}
+
+This allows us to split columns apart into multiple variables. 
+
+### `separate` ex 1
+
+Take a look at `SmallLabData` below (we've used some `dplyr` and the `janitor::remove_empty()` function to get `SmallLabData` from `AllLabs`.
+
+```{r SmallLabData}
+AllLabs %>% 
+    filter(source == "data/SmallLabData.csv") %>% 
+    select(-source) %>% 
+    janitor::remove_empty() -> SmallLabData
+SmallLabData
+```
+
+
+Separate `ref` into `ref_value` and `ref_units`
+
+```{r separate-ex, eval=FALSE}
+SmallLabData %>% 
+    separate(col = ___, into = c("_______", "_______"), sep = " ")
+```
+
+
+### `separate` sol 1
+
+```{r separate-sol}
+SmallLabData %>% 
+    separate(col = ref, into = c("ref_value", "ref_units"), sep = " ")
+```
+
+***
+
+## `separate_rows()`  {.tabset}
+
+`separate_rows()` is similar to `separate()`, but drops the values down the rows. This is commonly used when we have more than one value in each column. 
+
+Take a look at `LabData` below. 
+
+```{r LabData}
+AllLabs %>% 
+    filter(source == "data/LabData.csv") %>% 
+    select(-source) %>% 
+    janitor::remove_empty() -> LabData
+
+ LabData
+```
+
+### `separate_rows` ex 1
+
+Put all the `value`s into their own cell, and make sure the new variable is numeric. 
+
+```{r separate_rows-ex, eval=FALSE}
+LabData %>% 
+  separate_rows(_____, sep = _____, convert = TRUE)
+```
+
+
+### `separate_rows` sol 1
+
+Note the `convert` argument to make `value` numeric. 
+
+```{r separate_rows-solution}
+LabData %>% 
+  separate_rows(value, sep = ", ", convert = TRUE)
+```
+
+***
+
+## `unite()` {.tabset} 
+
+Just like `separate`/`separate_rows` allows us to split up columns, `unite()` lets us stick them back together!
+
+Take a look at `LabProc`.
+
+```{r LabProc}
+AllLabs %>% 
+    filter(source == "data/LabProc.csv") %>% 
+    select(-source) %>% 
+    janitor::remove_empty() -> LabProc
+LabProc
+```
+
+### `unite` ex 1
+
+Separate the labs from each other, and drop them down the rows. 
+
+```{r unite-separate_rows, eval=FALSE}
+LabProc %>% 
+    separate_rows(lab_proc, sep = "___")
+```
+
+### `unite` ex 2
+
+Put `lab`, `value`, and `units` in to their own columns.
+
+```{r unite-separate_rows-separate, eval=FALSE}
+LabProc %>% 
+    separate_rows(lab_proc, sep = "___") %>% 
+    separate(col = lab_proc,into = c('__', '_____', '_____'), 
+           sep = " ", convert = ____)
+```
+
+### `unite` ex 3
+
+Unite `lab`, `value` and `units` into `lab_name` (don't remove the previous columns with `remove = FALSE`).
+
+```{r unite, eval=FALSE}
+LabProc %>% 
+    separate_rows(lab_proc, sep = "___") %>% 
+    separate(col = lab_proc,into = c('__', '_____', '_____'), 
+           sep = " ", convert = ____)
+    unite(col = "_______", lab:units, sep = " ", remove = _____)
+```
+
+### `unite` sol 1
+
+Separate the labs from each other, and drop them down the rows.
+
+```{r unite-solution-1}
+LabProc %>% 
+     separate_rows(lab_proc, sep = "; ") 
+```
+
+### `unite` sol 2
+
+Put `lab`, `value`, and `units` in to their own columns.
+
+```{r unite-solution-2}
+LabProc %>% 
+     separate_rows(lab_proc, sep = "; ") %>% 
+     separate(col = lab_proc,into = c('lab', 'value', 'units'), 
+            sep = " ", convert = TRUE) 
+```
+
+### `unite` sol 3
+
+Unite `lab`, `value` and `units` into `lab_name` (don't remove the previous columns with `remove = FALSE`).
+
+```{r unite-solution-3}
+LabProc %>% 
+     separate_rows(lab_proc, sep = "; ") %>% 
+     separate(col = lab_proc,into = c('lab', 'value', 'units'), 
+            sep = " ", convert = TRUE) %>% 
+     unite(col = "lab_name", lab:units, sep = " ", remove = FALSE)
+```
+
+***
+
+## `unnest()` use case
+
+`unnest()` deals with nested data, which can be complicated to explain, so we'll use an example. Run the code below to download data from the [Anti-Doping Agency Sanction database](https://www.usada.org/news/sanctions/). 
+
+```{r 01-create-usada-data}
+source("code/01-create-usada-data.R")
+```
+
+These data have two dates (`original` and `updated`) in a single column (`sanction_announced`). **We only want `updated` dates in their own columns.**
+
+```{r UsadaBadDates}
+UsadaBadDates
+```
+
+### `str_split` 
+
+Use the `stringr` package's `str_split` function to split the bad dates on the `"updated"` pattern. 
+
+```{r str_split}
+UsadaBadDates %>%
+        dplyr::mutate(sanction_dates = 
+    # 1) split this on the "updated" pattern
+             stringr::str_split(string = sanction_announced, 
+                                pattern = "updated")) %>% 
+    # only return what we're interested in 
+    dplyr::select(athlete, sanction_announced, sanction_dates)
+```
+
+### Nested data
+
+This creates a nested column (`sanction_dates`), which we can deal with by `unnest()`ing it. Let's take a better look with `listviewer` (but only look at `athlete` and `sanction_dates`).
+
+```{r listviewer}
+library(listviewer)
+UsadaBadDates %>%
+        dplyr::mutate(sanction_dates = 
+    # 1) split this on the "updated" pattern
+             stringr::str_split(string = sanction_announced, 
+                                pattern = "updated")) %>% 
+    # only return what we're interested in 
+    dplyr::select(athlete, sanction_dates) %>% 
+    listviewer::jsonedit(mode = "view")
+```
+
+
+### `unnest`
+
+After unnesting, we can see the dates have been repeated down the rows (like `separate_rows()`).
+
+```{r unnest}
+UsadaBadDates %>%
+        dplyr::mutate(sanction_dates = 
+    # 1) split this on the "updated" pattern
+             stringr::str_split(string = sanction_announced, 
+                                pattern = "updated")) %>% 
+    # convert the output from split into multiple rows
+        tidyr::unnest(sanction_dates) %>% 
+    # check this to see what is happening 
+    dplyr::select(athlete, sanction_announced, sanction_dates)
+```
+
+### `filter` 
+
+We can see all of the updated dates are on a new line, and the original dates still contain the text. Now I can filter out the rows with an original date (because I am only interested in the updated dates).
+
+```{r filter}
+UsadaBadDates %>%
+        dplyr::mutate(sanction_dates = 
+    # 1) split this on the "updated" pattern
+             stringr::str_split(string = sanction_announced, 
+                                pattern = "updated")) %>% 
+    # 2) convert the output from split into multiple rows
+        tidyr::unnest(sanction_dates) %>% 
+    
+    # 3) remove the "original" dates 
+        dplyr::filter(!str_detect(string = sanction_dates, 
+                                  pattern = "original")) %>% 
+    # check this to see what is happening 
+    dplyr::select(athlete, sanction_announced, sanction_dates)
+```
+
+### `str_remove_all`
+
+Now I can clean up the updated `sanction_dates` and format it. 
+
+```{r str_remove_all}
+UsadaBadDates %>%
+        dplyr::mutate(sanction_dates = 
+    # 1) split this on the "updated" pattern
+             stringr::str_split(string = sanction_announced, 
+                                pattern = "updated")) %>% 
+    # 2) convert the output from split into multiple rows
+        tidyr::unnest(sanction_dates) %>% 
+    
+    # 3) remove the "original" dates 
+        dplyr::filter(!str_detect(string = sanction_dates, 
+                                  pattern = "original")) %>% 
+    # 4) remove the colon from sanction_dates
+        dplyr::mutate(sanction_dates = stringr::str_remove_all(
+                                                      string = sanction_dates,
+                                                      pattern = ":"),
+                      # 5) remove any whitespace
+                      sanction_dates = stringr::str_trim(sanction_dates),
+                      # 6) format as date
+                      sanction_dates = lubridate::mdy(sanction_dates)) %>%
+    # check this to see what is happening 
+    dplyr::select(athlete, sanction_announced, sanction_dates)
+```
+
+
+### `ggplot2`
+
+***How far can this pipe go??***
+
+Well, when the data are arranged in the way we want, we can test it with a visualization to check the number of sanctions per sport with bad dates. 
+
+```{r visualize}
+UsadaBadDates %>%
+        dplyr::mutate(sanction_dates = 
+    # 1) split this on the "updated" pattern
+             stringr::str_split(string = sanction_announced, 
+                                pattern = "updated")) %>% 
+    # 2) convert the output from split into multiple rows
+        tidyr::unnest(sanction_dates) %>% 
+    
+    # 3) remove the "original" dates 
+        dplyr::filter(!str_detect(string = sanction_dates, 
+                                  pattern = "original")) %>% 
+    # 4) remove the colon from sanction_dates
+        dplyr::mutate(sanction_dates = stringr::str_remove_all(
+                                                      string = sanction_dates,
+                                                      pattern = ":"),
+                      # 5) remove any whitespace
+                      sanction_dates = stringr::str_trim(sanction_dates),
+                      # 6) format as date
+                      sanction_dates = lubridate::mdy(sanction_dates)) %>% 
+    # count by sport
+    dplyr::count(sport, sort = TRUE) %>% 
+    # rename n 
+    rename(`Sport Count` = n,
+            Sport = sport) %>% 
+    ggplot2::ggplot(aes(x = `Sport Count`, 
+                        y = forcats::fct_reorder(as.factor(Sport), `Sport Count`), 
+                        fill = as.character(`Sport Count`))) + 
+    geom_col(show.legend = FALSE) + 
+    labs(x = "Number of Sanctions", y = "Sport", 
+         title = "Number of Sanctions with Bad Dates",
+         caption = "source: https://www.usada.org/news/sanctions/")
+```
+
+

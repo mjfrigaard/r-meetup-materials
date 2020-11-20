@@ -62,6 +62,20 @@ IntervalLabs <- IntervalLabs %>%
   dplyr::mutate(
     lbdat = lubridate::mdy(lbdat))
 
+
+# case_when ---------------------------------------------------------------
+
+IntervalLabs %>% 
+  mutate(aav5_flag = 
+           case_when(
+    str_detect(string = lbtest, pattern = "AAV5") ~ "AAV5 test", 
+    TRUE ~ "No AAV5 test")) %>% 
+  count(aav5_flag) %>% 
+  pivot_wider(names_from = aav5_flag, values_from = n) 
+
+  # filter(str_detect(lbtest, "AAV5"))
+# IntervalLabs
+
 # create sample visit data ------------------------------------------------
 IntervalVists <- tibble::tribble(
           ~SUBJECT, ~VISIT, ~TARGETDATE, ~UPPERDATE, ~LOWERDATE,
@@ -75,7 +89,9 @@ IntervalVists <- IntervalVists %>%
 # convert dates 
 IntervalVists <- IntervalVists %>%
   dplyr::mutate(
-    targetdate = lubridate::mdy(targetdate))
+    targetdate = lubridate::dmy(targetdate))
+
+IntervalVists
 
 
 # create data window ------------------------------------------------------
